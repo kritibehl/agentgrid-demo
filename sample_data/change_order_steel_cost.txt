@@ -1,0 +1,3 @@
+Change Order 7
+The structural steel supplier reported a price increase and a lead time extension.
+This may create cost impact for the package and affect downstream sequencing.

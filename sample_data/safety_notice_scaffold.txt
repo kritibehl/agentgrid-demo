@@ -1,0 +1,3 @@
+Safety Notice
+Field team observed an unsafe scaffold access condition with fall hazard exposure.
+Corrective action is required immediately and work in the area should pause pending review.

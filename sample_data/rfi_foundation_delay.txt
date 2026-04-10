@@ -1,0 +1,4 @@
+RFI 102
+Request for information regarding foundation edge detail.
+The anchor bolt offset is not clearly shown and the dimension appears unclear.
+Inspector approval is pending and concrete placement may be delayed if clarification is not issued today.
