@@ -1,0 +1,22 @@
+{
+  "id": "github-actions-2023-01-30",
+  "company": "GitHub",
+  "title": "Actions incident affecting workflow execution",
+  "date": "2023-01-30",
+  "source_url": "PASTE_PUBLIC_POSTMORTEM_URL_HERE",
+  "summary": "Workflow execution and related developer automation were degraded.",
+  "failure_taxonomy": ["dependency_outage", "control_plane_failure", "cascading_timeout"],
+  "system_layers": ["application", "control_plane", "database"],
+  "detection_method": "internal_alert",
+  "detection_gap_minutes": 8,
+  "recovery_pattern": ["restart", "manual_mitigation", "traffic_shift"],
+  "customer_impact": "Delayed or failed CI workflow execution.",
+  "root_cause": "Control-plane instability propagated into job orchestration failures.",
+  "what_would_have_caught_it_earlier": [
+    "queue-depth anomaly alerts",
+    "control-plane health invariants",
+    "dependency timeout-chain tracing"
+  ],
+  "atlas_lessons": "This maps directly to reliability validation. DetTrace-style causal reconstruction would help isolate where queueing drift became operator-visible. AutoOps-style failure categorization could surface recurrence patterns faster.",
+  "tags": ["ci", "control-plane", "workflow", "timeout"]
+}

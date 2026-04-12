@@ -1,0 +1,20 @@
+{
+  "id": "stripe-api-incident-example",
+  "company": "Stripe",
+  "title": "API availability degradation example",
+  "date": "2022-01-01",
+  "source_url": "PASTE_PUBLIC_POSTMORTEM_URL_HERE",
+  "summary": "Template entry. Replace with a real public Stripe postmortem.",
+  "failure_taxonomy": ["dependency_outage"],
+  "system_layers": ["application", "database"],
+  "detection_method": "customer_report",
+  "detection_gap_minutes": 15,
+  "recovery_pattern": ["manual_mitigation"],
+  "customer_impact": "Template entry.",
+  "root_cause": "Template entry.",
+  "what_would_have_caught_it_earlier": [
+    "synthetic checks"
+  ],
+  "atlas_lessons": "Replace with a real lesson tied to your validation framework.",
+  "tags": ["template"]
+}
