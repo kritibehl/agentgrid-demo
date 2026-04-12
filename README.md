@@ -1,120 +1,159 @@
-# AgentGrid Demo
+<div align="center">
 
-A small standalone **LangGraph** project that triages construction / project documents, extracts operational risks, and routes each document to the right owner with a concise action plan.
+# AgentGrid-Demo
 
-This repo is intentionally small, interview-friendly, and easy to run locally. It demonstrates a real **agentic workflow** rather than a single LLM call:
+**LangGraph agentic workflow for document triage, risk extraction, and owner routing**
 
-- classify the document
-- extract structured issues
-- score urgency
-- route to the right team
-- generate an operator-facing summary
+[![Python](https://img.shields.io/badge/Python-3.11-3776AB?style=flat-square&logo=python&logoColor=white)](https://python.org)
+[![LangGraph](https://img.shields.io/badge/LangGraph-Agentic%20Workflow-1C3A5E?style=flat-square)](https://github.com/langchain-ai/langgraph)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow?style=flat-square)](LICENSE)
 
-## Why this project is useful
+</div>
 
-This is a good fit for Solutions Engineer / Forward Deployed / SWE I applications because it shows:
+---
 
-- workflow design using a graph instead of one-shot prompting
-- structured state passing between nodes
-- tool-style deterministic logic mixed with optional LLM summarization
-- auditable outputs that are easy to inspect and test
+> Most LLM applications make a single call and return text.
+> **AgentGrid executes a structured multi-step workflow — classify, extract, score, route — with typed state at every transition.**
 
-## Project layout
+---
 
-```text
-agentgrid-demo/
-├── README.md
-├── requirements.txt
-├── src/
-│   ├── app.py
-│   ├── graph.py
-│   └── schemas.py
-├── sample_data/
-│   ├── rfi_foundation_delay.txt
-│   ├── change_order_steel_cost.txt
-│   └── safety_notice_scaffold.txt
-└── tests/
-    └── test_graph.py
+## What it does
+
+AgentGrid takes a construction or project document and runs it through a deterministic four-node graph:
+
+```
+Document input
+      ↓
+Classification node    — what kind of document is this?
+      ↓
+Issue extraction node  — what schedule, cost, and safety risks does it contain?
+      ↓
+Urgency scoring node   — how critical is each issue?
+      ↓
+Routing node           — who owns each issue, and what action is required?
+      ↓
+Structured output: issue list · risk categories · urgency scores · owner routing
 ```
 
-## What the workflow does
+Each node has typed input and output state. Transitions are deterministic. The graph is auditable and testable at every step.
 
-The graph processes a document through these steps:
+---
 
-1. **Ingest**: load raw text and normalize it.
-2. **Classify**: identify whether the file looks like an RFI, change order, safety notice, schedule update, or general correspondence.
-3. **Extract issues**: pull out deterministic signals like delay, cost, safety, inspection, permit, rework, or material shortage.
-4. **Score urgency**: assign a severity level based on the extracted issues.
-5. **Route**: send the item to PM, procurement, field operations, safety, or engineering.
-6. **Summarize**: produce a concise operator-facing action note.
+## Why graph-based over single-call
 
-## Example
+A single LLM call for document triage has two problems: it cannot be tested in isolation (the whole thing passes or fails), and it conflates distinct concerns (classification, extraction, scoring, routing) into one opaque blob of output.
 
-```bash
-python -m src.app --file sample_data/rfi_foundation_delay.txt
-```
+A graph separates those concerns. Each node can be tested independently, replaced without touching adjacent nodes, and inspected to understand exactly where the workflow is and what state it is holding at any point.
 
-Example output:
+This is the design pattern behind production agentic systems at Anthropic, Google DeepMind, and any serious LLM application team.
+
+---
+
+## Example output
+
+Given a construction project document with schedule delays and a safety concern:
 
 ```json
 {
-  "document_type": "rfi",
-  "severity": "high",
-  "owner": "engineering",
+  "document_type": "project_status_report",
   "issues": [
-    "delay_risk",
-    "inspection_dependency",
-    "missing_detail"
+    {
+      "issue": "Foundation pour delayed 3 weeks",
+      "risk_category": "schedule",
+      "urgency_score": 8,
+      "owner": "project_manager",
+      "action": "Escalate to project manager — critical path impact"
+    },
+    {
+      "issue": "Safety harness inspection overdue",
+      "risk_category": "safety",
+      "urgency_score": 10,
+      "owner": "site_safety_officer",
+      "action": "Immediate: halt affected operations until inspection complete"
+    }
   ],
-  "action_summary": "Treat as a high-priority engineering review. Missing details and inspection dependency may block foundation work and create schedule slip. Confirm drawing clarification, inspection timing, and field workaround today."
+  "routing_summary": {
+    "project_manager": ["foundation delay"],
+    "site_safety_officer": ["safety harness inspection"]
+  }
 }
 ```
 
-## Installation
+---
+
+## Node design
+
+| Node | Input | Output |
+|---|---|---|
+| Classification | Raw document text | `document_type`, `domain` |
+| Issue extraction | Document + type | List of issues with risk category |
+| Urgency scoring | Issues + risk categories | Urgency score per issue (1–10) |
+| Routing | Scored issues | Owner + recommended action per issue |
+
+Typed state flows through the graph. No node invents fields the downstream node does not expect.
+
+---
+
+## Structure
+
+```
+agentgrid-demo/
+├── src/
+│   ├── graph.py          # LangGraph workflow definition
+│   ├── nodes/
+│   │   ├── classify.py   # Document classification node
+│   │   ├── extract.py    # Issue extraction node
+│   │   ├── score.py      # Urgency scoring node
+│   │   └── route.py      # Owner routing node
+│   └── state.py          # Typed state schema
+├── sample_data/          # Sample construction project documents
+├── tests/                # CI-friendly tests per node + integration
+└── requirements.txt
+```
+
+---
+
+## Running
 
 ```bash
-python3 -m venv .venv
-source .venv/bin/activate
+python -m venv .venv && source .venv/bin/activate
 pip install -r requirements.txt
-pytest -q
+
+# Run on a sample document
+python src/graph.py --input sample_data/project_status.txt
+
+# Run tests
+pytest tests/ -v
 ```
 
-## Run locally
+---
 
-```bash
-python -m src.app --file sample_data/rfi_foundation_delay.txt
-python -m src.app --file sample_data/change_order_steel_cost.txt
-python -m src.app --file sample_data/safety_notice_scaffold.txt
-```
+## What this demonstrates
 
-## Design notes
+**Stateful multi-step agent execution** — not a single LLM call. The graph holds and propagates typed state across four distinct reasoning steps.
 
-### LangGraph state
+**Deterministic node design** — each node has a fixed contract. Classification does not bleed into routing. Scoring does not depend on document type. The graph is composable and extensible.
 
-The graph keeps a shared typed state with:
+**Testable agent architecture** — each node can be tested independently with fixed input/output state. CI runs cleanly without mocking the entire graph.
 
-- raw document text
-- normalized text
-- document type
-- extracted issues
-- severity
-- routed owner
-- action summary
+**Real output structure** — the workflow produces structured JSON artifacts, not narrative text. Owner routing is explicit and machine-readable.
 
-### Deterministic-first architecture
+---
 
-The main workflow uses deterministic parsing so it is:
+## Scope
 
-- easy to test
-- reproducible in CI
-- safe to demo without API keys
+This is a structured demo — intentionally small and clear. It is not a production multi-tenant routing system. The value is in the architecture pattern: graph-based agent design, typed state, deterministic nodes, and testable workflows. These are the same patterns used in production agentic systems at scale.
 
-You can later swap the `summarize` node with a real LLM-backed summarizer.
+---
 
-## Future extensions
+## Stack
 
-- add OCR/PDF ingestion
-- plug in a vector store for similar-doc retrieval
-- add human approval step before final routing
-- expose the graph behind FastAPI
-- store document decisions in PostgreSQL for analytics
+Python · LangGraph
+
+---
+
+## Related
+
+- [Faultline](https://github.com/kritibehl/faultline) — distributed correctness under failure
+- [AutoOps-Insight](https://github.com/kritibehl/AutoOps-Insight) — structured incident triage for CI failures
+- [FairEval](https://github.com/kritibehl/FairEval-Suite) — regression gating for AI system releases
