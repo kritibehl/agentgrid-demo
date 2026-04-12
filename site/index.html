@@ -20,6 +20,8 @@
   <input id="search" placeholder="Search company, title, failure type, tags..." size="48" />
   <select id="companyFilter"><option value="">All companies</option></select>
   <select id="failureFilter"><option value="">All failure types</option></select>
+  <select id="layerFilter"><option value="">All system layers</option></select>
+  <select id="detectionFilter"><option value="">All detection methods</option></select>
 
   <div id="results"></div>
 
@@ -29,9 +31,13 @@
     const searchEl = document.getElementById("search");
     const companyFilterEl = document.getElementById("companyFilter");
     const failureFilterEl = document.getElementById("failureFilter");
+    const layerFilterEl = document.getElementById("layerFilter");
+    const detectionFilterEl = document.getElementById("detectionFilter");
 
     const companies = [...new Set(POSTMORTEMS.map(p => p.company))].sort();
     const failureTypes = [...new Set(POSTMORTEMS.flatMap(p => p.failure_taxonomy))].sort();
+    const layers = [...new Set(POSTMORTEMS.flatMap(p => p.system_layers || []))].sort();
+    const detectionMethods = [...new Set(POSTMORTEMS.map(p => p.detection_method).filter(Boolean))].sort();
 
     for (const company of companies) {
       const opt = document.createElement("option");
@@ -47,10 +53,26 @@
       failureFilterEl.appendChild(opt);
     }
 
+    for (const layer of layers) {
+      const opt = document.createElement("option");
+      opt.value = layer;
+      opt.textContent = layer;
+      layerFilterEl.appendChild(opt);
+    }
+
+    for (const method of detectionMethods) {
+      const opt = document.createElement("option");
+      opt.value = method;
+      opt.textContent = method;
+      detectionFilterEl.appendChild(opt);
+    }
+
     function matches(pm) {
       const q = searchEl.value.trim().toLowerCase();
       const company = companyFilterEl.value;
       const failure = failureFilterEl.value;
+      const layer = layerFilterEl.value;
+      const detection = detectionFilterEl.value;
 
       const haystack = [
         pm.company, pm.title, pm.summary, pm.root_cause, pm.atlas_lessons,
@@ -62,6 +84,8 @@
       if (q && !haystack.includes(q)) return false;
       if (company && pm.company !== company) return false;
       if (failure && !(pm.failure_taxonomy || []).includes(failure)) return false;
+      if (layer && !(pm.system_layers || []).includes(layer)) return false;
+      if (detection && pm.detection_method !== detection) return false;
       return true;
     }
 
@@ -87,6 +111,8 @@
     searchEl.addEventListener("input", render);
     companyFilterEl.addEventListener("change", render);
     failureFilterEl.addEventListener("change", render);
+    layerFilterEl.addEventListener("change", render);
+    detectionFilterEl.addEventListener("change", render);
     render();
   </script>
 </body>

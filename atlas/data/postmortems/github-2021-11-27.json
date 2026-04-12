@@ -1,0 +1,20 @@
+{
+  "id": "github-2021-11-27",
+  "company": "GitHub",
+  "title": "Service degradation affecting web and API",
+  "date": "2021-11-27",
+  "source_url": "",
+  "summary": "",
+  "failure_taxonomy": [],
+  "system_layers": [],
+  "detection_method": "",
+  "detection_gap_minutes": 0,
+  "recovery_pattern": [],
+  "customer_impact": "",
+  "root_cause": "",
+  "what_would_have_caught_it_earlier": [],
+  "atlas_lessons": "",
+  "tags": [
+    "github"
+  ]
+}
