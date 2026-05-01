@@ -1,0 +1,65 @@
+{
+  "total_runs": 3,
+  "latency_p50_seconds": 0.0008,
+  "latency_p95_seconds": 0.0029,
+  "tool_call_success_rate": 1.0,
+  "ship_count": 3,
+  "hold_count": 0,
+  "escalate_count": 0,
+  "runs": [
+    {
+      "file": "data/docs/deployment_failure.txt",
+      "latency_seconds": 0.0029,
+      "issue": "timeout",
+      "context_sources": [
+        "data/docs/deployment_failure.txt",
+        "data/logs/service_logs.txt",
+        "data/runbooks/db_timeout.txt"
+      ],
+      "tool_call_success": true,
+      "eval_gate": {
+        "correctness": true,
+        "citation_coverage": true,
+        "unsupported_answer": false,
+        "safety": true,
+        "final_decision": "ship"
+      }
+    },
+    {
+      "file": "data/logs/service_logs.txt",
+      "latency_seconds": 0.0008,
+      "issue": "timeout",
+      "context_sources": [
+        "data/docs/deployment_failure.txt",
+        "data/logs/service_logs.txt",
+        "data/runbooks/db_timeout.txt"
+      ],
+      "tool_call_success": true,
+      "eval_gate": {
+        "correctness": true,
+        "citation_coverage": true,
+        "unsupported_answer": false,
+        "safety": true,
+        "final_decision": "ship"
+      }
+    },
+    {
+      "file": "data/runbooks/db_timeout.txt",
+      "latency_seconds": 0.0007,
+      "issue": "timeout",
+      "context_sources": [
+        "data/docs/deployment_failure.txt",
+        "data/logs/service_logs.txt",
+        "data/runbooks/db_timeout.txt"
+      ],
+      "tool_call_success": true,
+      "eval_gate": {
+        "correctness": true,
+        "citation_coverage": true,
+        "unsupported_answer": false,
+        "safety": true,
+        "final_decision": "ship"
+      }
+    }
+  ]
+}

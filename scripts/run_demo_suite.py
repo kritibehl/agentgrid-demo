@@ -1,6 +1,10 @@
 import json
 import statistics
+import sys
 from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT))
 
 from src.agent.graph import run_agent
 from src.metrics.metrics import measure
@@ -29,7 +33,7 @@ def main():
 
         runs.append({
             "file": file_path,
-            "latency_seconds": latency,
+            "latency_seconds": round(latency, 4),
             "issue": output.get("issue"),
             "context_sources": [c.get("source") for c in output.get("context", [])],
             "tool_call_success": True,
