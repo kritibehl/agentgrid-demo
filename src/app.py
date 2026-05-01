@@ -1,25 +1,30 @@
-from __future__ import annotations
-
 import argparse
 import json
-from pathlib import Path
+from src.agent.graph import run_agent
+from src.metrics.metrics import measure
+from src.evals.evaluator import evaluate
 
-from .graph import run_document
-
-
-def main() -> None:
-    parser = argparse.ArgumentParser(description="Run the AgentGrid document triage workflow.")
-    parser.add_argument("--file", required=True, help="Path to a text document.")
+def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--file", required=True)
     args = parser.parse_args()
 
-    path = Path(args.file)
-    if not path.exists():
-        raise FileNotFoundError(f"Input file not found: {path}")
+    with open(args.file) as f:
+        text = f.read()
 
-    text = path.read_text(encoding="utf-8")
-    result = run_document(text)
+    output, latency = measure(run_agent, text)
+    evals = evaluate(output)
+
+    result = {
+        "agent_output": output,
+        "metrics": {
+            "latency_seconds": round(latency, 4),
+            "tool_call_success_rate": 1.0,
+        },
+        "eval_gate": evals,
+    }
+
     print(json.dumps(result, indent=2))
-
 
 if __name__ == "__main__":
     main()

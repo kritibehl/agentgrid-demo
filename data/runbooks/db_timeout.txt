@@ -1,0 +1,4 @@
+If DB timeout occurs:
+1. Check DB health
+2. Restart connection pool
+3. Scale DB if needed
