@@ -1,159 +1,107 @@
-<div align="center">
+# AgentGrid: Production GenAI Support & Deployment System
 
-# AgentGrid-Demo
+AgentGrid is a production-style GenAI support system that uses a LangGraph workflow, retrieval over operational documents/logs/runbooks, MCP-style tools, metrics, and an evaluation gate to classify incidents, retrieve evidence, generate action plans, and decide whether to ship, hold, or escalate.
 
-**LangGraph agentic workflow for document triage, risk extraction, and owner routing**
+## Why this project exists
 
-[![Python](https://img.shields.io/badge/Python-3.11-3776AB?style=flat-square&logo=python&logoColor=white)](https://python.org)
-[![LangGraph](https://img.shields.io/badge/LangGraph-Agentic%20Workflow-1C3A5E?style=flat-square)](https://github.com/langchain-ai/langgraph)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow?style=flat-square)](LICENSE)
+Modern support and deployment workflows often fail because operational evidence is scattered across logs, docs, runbooks, and incident notes. AgentGrid turns those inputs into a structured, evidence-backed decision workflow.
 
-</div>
+## Architecture
 
----
+```text
+Input document/log/runbook
+        |
+        v
+[classify_issue]
+        |
+        v
+[retrieve_context]  ---> local RAG over docs/logs/runbooks
+        |
+        v
+[analyze_logs]      ---> MCP-style tool
+        |
+        v
+[create_action_plan] ---> MCP-style tool
+        |
+        v
+[generate_answer]
+        |
+        v
+[eval_gate]
+        |
+        v
+ship / hold / escalate
+What it does
+Classifies operational issues from docs, logs, and runbooks
+Retrieves supporting evidence with citations
+Calls MCP-style tools for document search, log analysis, and action planning
+Produces structured JSON outputs
+Tracks latency and tool-call success rate
+Runs an eval gate for correctness, citation coverage, unsupported answer detection, safety, and final decisioning
+Demo
 
-> Most LLM applications make a single call and return text.
-> **AgentGrid executes a structured multi-step workflow — classify, extract, score, route — with typed state at every transition.**
+Run one document:
 
----
+python3 -m src.app --file data/docs/deployment_failure.txt
 
-## What it does
+Run the demo suite:
 
-AgentGrid takes a construction or project document and runs it through a deterministic four-node graph:
+python3 scripts/run_demo_suite.py
 
-```
-Document input
-      ↓
-Classification node    — what kind of document is this?
-      ↓
-Issue extraction node  — what schedule, cost, and safety risks does it contain?
-      ↓
-Urgency scoring node   — how critical is each issue?
-      ↓
-Routing node           — who owns each issue, and what action is required?
-      ↓
-Structured output: issue list · risk categories · urgency scores · owner routing
-```
+The suite writes metrics to:
 
-Each node has typed input and output state. Transitions are deterministic. The graph is auditable and testable at every step.
-
----
-
-## Why graph-based over single-call
-
-A single LLM call for document triage has two problems: it cannot be tested in isolation (the whole thing passes or fails), and it conflates distinct concerns (classification, extraction, scoring, routing) into one opaque blob of output.
-
-A graph separates those concerns. Each node can be tested independently, replaced without touching adjacent nodes, and inspected to understand exactly where the workflow is and what state it is holding at any point.
-
-This is the design pattern behind production agentic systems at Anthropic, Google DeepMind, and any serious LLM application team.
-
----
-
-## Example output
-
-Given a construction project document with schedule delays and a safety concern:
-
-```json
+reports/demo_metrics.json
+Example output
 {
-  "document_type": "project_status_report",
-  "issues": [
-    {
-      "issue": "Foundation pour delayed 3 weeks",
-      "risk_category": "schedule",
-      "urgency_score": 8,
-      "owner": "project_manager",
-      "action": "Escalate to project manager — critical path impact"
-    },
-    {
-      "issue": "Safety harness inspection overdue",
-      "risk_category": "safety",
-      "urgency_score": 10,
-      "owner": "site_safety_officer",
-      "action": "Immediate: halt affected operations until inspection complete"
-    }
-  ],
-  "routing_summary": {
-    "project_manager": ["foundation delay"],
-    "site_safety_officer": ["safety harness inspection"]
+  "metrics": {
+    "latency_seconds": 0.0028,
+    "tool_call_success_rate": 1.0
+  },
+  "eval_gate": {
+    "correctness": true,
+    "citation_coverage": true,
+    "unsupported_answer": false,
+    "safety": true,
+    "final_decision": "ship"
   }
 }
-```
+MCP-style tools
 
----
+AgentGrid includes three tool-like functions:
 
-## Node design
+search_docs: retrieves evidence from docs, logs, and runbooks
+analyze_logs: detects timeout, retry, and latency degradation signals
+create_action_plan: generates operational next steps based on the classified issue
+Eval gate
 
-| Node | Input | Output |
-|---|---|---|
-| Classification | Raw document text | `document_type`, `domain` |
-| Issue extraction | Document + type | List of issues with risk category |
-| Urgency scoring | Issues + risk categories | Urgency score per issue (1–10) |
-| Routing | Scored issues | Owner + recommended action per issue |
+The eval gate checks:
 
-Typed state flows through the graph. No node invents fields the downstream node does not expect.
+correctness
+citation coverage
+unsupported answer risk
+safety
+final decision: ship, hold, or escalate
+Metrics
 
----
+AgentGrid tracks:
 
-## Structure
+latency per request
+latency p50/p95 across demo suite
+tool-call success rate
+ship/hold/escalate counts
+API
 
-```
-agentgrid-demo/
-├── src/
-│   ├── graph.py          # LangGraph workflow definition
-│   ├── nodes/
-│   │   ├── classify.py   # Document classification node
-│   │   ├── extract.py    # Issue extraction node
-│   │   ├── score.py      # Urgency scoring node
-│   │   └── route.py      # Owner routing node
-│   └── state.py          # Typed state schema
-├── sample_data/          # Sample construction project documents
-├── tests/                # CI-friendly tests per node + integration
-└── requirements.txt
-```
+Run locally:
 
----
+uvicorn src.api.server:app --reload
 
-## Running
+Health check:
 
-```bash
-python -m venv .venv && source .venv/bin/activate
-pip install -r requirements.txt
+curl http://127.0.0.1:8000/health
 
-# Run on a sample document
-python src/graph.py --input sample_data/project_status.txt
+Run agent:
 
-# Run tests
-pytest tests/ -v
-```
+curl -X POST "http://127.0.0.1:8000/run?input=DB%20timeout%20failure"
+Resume summary
 
----
-
-## What this demonstrates
-
-**Stateful multi-step agent execution** — not a single LLM call. The graph holds and propagates typed state across four distinct reasoning steps.
-
-**Deterministic node design** — each node has a fixed contract. Classification does not bleed into routing. Scoring does not depend on document type. The graph is composable and extensible.
-
-**Testable agent architecture** — each node can be tested independently with fixed input/output state. CI runs cleanly without mocking the entire graph.
-
-**Real output structure** — the workflow produces structured JSON artifacts, not narrative text. Owner routing is explicit and machine-readable.
-
----
-
-## Scope
-
-This is a structured demo — intentionally small and clear. It is not a production multi-tenant routing system. The value is in the architecture pattern: graph-based agent design, typed state, deterministic nodes, and testable workflows. These are the same patterns used in production agentic systems at scale.
-
----
-
-## Stack
-
-Python · LangGraph
-
----
-
-## Related
-
-- [Faultline](https://github.com/kritibehl/faultline) — distributed correctness under failure
-- [AutoOps-Insight](https://github.com/kritibehl/AutoOps-Insight) — structured incident triage for CI failures
-- [FairEval](https://github.com/kritibehl/FairEval-Suite) — regression gating for AI system releases
+Built a production-style GenAI support and deployment system using LangGraph with RAG over documents, logs, and runbooks, MCP-style tools for retrieval/log analysis/action planning, observability metrics, and an eval gate for correctness, citation coverage, hallucination risk, safety, and ship/hold/escalate decisions.
