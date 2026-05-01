@@ -1,0 +1,2 @@
+Service deployment failed due to timeout connecting to database.
+Multiple retries observed. Latency spikes before failure.

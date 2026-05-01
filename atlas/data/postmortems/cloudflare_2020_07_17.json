@@ -1,0 +1,22 @@
+{
+  "id": "cloudflare-2020-07-17",
+  "company": "Cloudflare",
+  "title": "Global outage triggered by router configuration deployment",
+  "date": "2020-07-17",
+  "source_url": "PASTE_PUBLIC_POSTMORTEM_URL_HERE",
+  "summary": "A broad service outage caused by a bad network/router configuration rollout.",
+  "failure_taxonomy": ["config_change", "network_partition", "deploy_regression"],
+  "system_layers": ["network", "edge", "control_plane"],
+  "detection_method": "internal_alert",
+  "detection_gap_minutes": 3,
+  "recovery_pattern": ["rollback", "manual_mitigation"],
+  "customer_impact": "Broad availability degradation across multiple services.",
+  "root_cause": "Configuration deployment introduced invalid routing behavior.",
+  "what_would_have_caught_it_earlier": [
+    "staged rollout with blast-radius guardrails",
+    "control-plane config validation",
+    "network path canary checks"
+  ],
+  "atlas_lessons": "A KubePulse-style topology validation layer would have caught path health degradation before broad rollout. A Faultline-style gated change path could have limited propagation of unsafe config state.",
+  "tags": ["network", "routing", "rollback", "canary"]
+}

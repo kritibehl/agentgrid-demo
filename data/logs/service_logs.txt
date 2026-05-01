@@ -1,0 +1,4 @@
+ERROR: DB connection timeout
+Retry attempt 1
+Retry attempt 2
+Latency exceeded threshold

@@ -1,0 +1,49 @@
+{
+  "failure_types": [
+    "dependency_outage",
+    "config_change",
+    "capacity_exhaustion",
+    "network_partition",
+    "database_failure",
+    "control_plane_failure",
+    "deploy_regression",
+    "dns_failure",
+    "storage_failure",
+    "observability_gap",
+    "cascading_timeout",
+    "human_error"
+  ],
+  "system_layers": [
+    "edge",
+    "network",
+    "load_balancer",
+    "application",
+    "database",
+    "control_plane",
+    "storage",
+    "third_party",
+    "client"
+  ],
+  "detection_methods": [
+    "customer_report",
+    "synthetic_check",
+    "internal_alert",
+    "dashboard_anomaly",
+    "log_signal",
+    "trace_signal",
+    "manual_investigation",
+    "status_page_monitoring"
+  ],
+  "recovery_patterns": [
+    "rollback",
+    "traffic_shift",
+    "restart",
+    "config_fix",
+    "capacity_scale_up",
+    "dependency_failover",
+    "manual_mitigation",
+    "rate_limit",
+    "cache_flush",
+    "feature_disable"
+  ]
+}
