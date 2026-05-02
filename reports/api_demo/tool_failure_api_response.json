@@ -1,0 +1,55 @@
+{
+    "agent_output": {
+        "input": "SIMULATE_TOOL_FAILURE Deployment failed because DB timeout caused retry storm and latency spike.",
+        "issue": "tool_failure",
+        "context": [],
+        "analysis": [
+            "Detected timeout issue",
+            "Detected retry behavior",
+            "Detected latency degradation"
+        ],
+        "actions": [
+            "Escalate because required tool execution failed"
+        ],
+        "answer": "Issue classified as tool_failure. Findings: Detected timeout issue, Detected retry behavior, Detected latency degradation. Recommended actions: Escalate because required tool execution failed. Evidence sources: none.",
+        "tool_errors": [
+            "simulated document search tool failure"
+        ],
+        "retrieval_latency_seconds": 0.0,
+        "trace": [
+            "classify_issue",
+            "retrieve_context",
+            "analyze_logs",
+            "create_action_plan",
+            "generate_answer"
+        ],
+        "model_mode": "mock"
+    },
+    "metrics": {
+        "latency_seconds": 0.0087,
+        "tool_call_success_rate": 0.0,
+        "tokens_input": 13,
+        "tokens_output": 34,
+        "tokens_per_second": 5371.45,
+        "estimated_cost_per_request": 5.8e-05,
+        "retrieval_hit_rate": 0.0,
+        "trace_depth": 5
+    },
+    "eval_gate": {
+        "correctness": true,
+        "citation_coverage": false,
+        "unsupported_answer": true,
+        "safety": true,
+        "retrieval_hit_rate": 0.0,
+        "final_decision": "escalate",
+        "reason": "tool_failure"
+    },
+    "autoops_event": {
+        "timestamp": "2026-05-02T01:31:32.989762+00:00",
+        "source": "agentgrid",
+        "issue_type": "tool_failure",
+        "severity": "critical",
+        "decision": "escalate",
+        "reason": "tool_failure"
+    }
+}

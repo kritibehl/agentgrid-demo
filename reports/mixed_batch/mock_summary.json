@@ -1,0 +1,302 @@
+{
+  "mode": "mock",
+  "total_runs": 25,
+  "decision_counts": {
+    "ship": 9,
+    "hold": 10,
+    "escalate": 6
+  },
+  "ship_count": 9,
+  "hold_count": 10,
+  "escalate_count": 6,
+  "top_failure_reason": "passed",
+  "reason_counts": {
+    "passed": 9,
+    "missing_context": 3,
+    "conflicting_docs": 3,
+    "tool_failure": 3,
+    "latency_breach": 3,
+    "unsupported_answer": 2,
+    "low_retrieval_hit_rate": 2
+  },
+  "latency_p50_ms": 2.61,
+  "latency_p95_ms": 258.02,
+  "tool_call_success_rate_avg": 0.88,
+  "runs": [
+    {
+      "run_id": 1,
+      "case": "data/docs/deployment_failure.txt",
+      "decision": "ship",
+      "reason": "passed",
+      "model_mode": "mock",
+      "latency_ms": 3.17,
+      "retrieval_hit_rate": 1.0,
+      "tool_call_success_rate": 1.0,
+      "estimated_cost_per_request": 0.000131
+    },
+    {
+      "run_id": 2,
+      "case": "data/logs/service_logs.txt",
+      "decision": "ship",
+      "reason": "passed",
+      "model_mode": "mock",
+      "latency_ms": 1.14,
+      "retrieval_hit_rate": 1.0,
+      "tool_call_success_rate": 1.0,
+      "estimated_cost_per_request": 0.000135
+    },
+    {
+      "run_id": 3,
+      "case": "data/runbooks/db_timeout.txt",
+      "decision": "ship",
+      "reason": "passed",
+      "model_mode": "mock",
+      "latency_ms": 0.99,
+      "retrieval_hit_rate": 1.0,
+      "tool_call_success_rate": 1.0,
+      "estimated_cost_per_request": 0.000126
+    },
+    {
+      "run_id": 4,
+      "case": "data/failure_cases/missing_context.txt",
+      "decision": "hold",
+      "reason": "missing_context",
+      "model_mode": "mock",
+      "latency_ms": 0.98,
+      "retrieval_hit_rate": 0.67,
+      "tool_call_success_rate": 1.0,
+      "estimated_cost_per_request": 8e-05
+    },
+    {
+      "run_id": 5,
+      "case": "data/failure_cases/conflicting_docs.txt",
+      "decision": "escalate",
+      "reason": "conflicting_docs",
+      "model_mode": "mock",
+      "latency_ms": 0.94,
+      "retrieval_hit_rate": 1.0,
+      "tool_call_success_rate": 1.0,
+      "estimated_cost_per_request": 9.6e-05
+    },
+    {
+      "run_id": 6,
+      "case": "data/failure_cases/tool_failure.txt",
+      "decision": "escalate",
+      "reason": "tool_failure",
+      "model_mode": "mock",
+      "latency_ms": 0.69,
+      "retrieval_hit_rate": 0.0,
+      "tool_call_success_rate": 0.0,
+      "estimated_cost_per_request": 5.5e-05
+    },
+    {
+      "run_id": 7,
+      "case": "data/failure_cases/slow_tool_latency_breach.txt",
+      "decision": "hold",
+      "reason": "latency_breach",
+      "model_mode": "mock",
+      "latency_ms": 258.02,
+      "retrieval_hit_rate": 1.0,
+      "tool_call_success_rate": 1.0,
+      "estimated_cost_per_request": 8.9e-05
+    },
+    {
+      "run_id": 8,
+      "case": "data/failure_cases/unsupported_answer.txt",
+      "decision": "hold",
+      "reason": "unsupported_answer",
+      "model_mode": "mock",
+      "latency_ms": 4.0,
+      "retrieval_hit_rate": 1.0,
+      "tool_call_success_rate": 1.0,
+      "estimated_cost_per_request": 4.4e-05
+    },
+    {
+      "run_id": 9,
+      "case": "data/failure_cases/low_retrieval_hit_rate.txt",
+      "decision": "hold",
+      "reason": "low_retrieval_hit_rate",
+      "model_mode": "mock",
+      "latency_ms": 2.87,
+      "retrieval_hit_rate": 0.33,
+      "tool_call_success_rate": 1.0,
+      "estimated_cost_per_request": 7.2e-05
+    },
+    {
+      "run_id": 10,
+      "case": "data/docs/deployment_failure.txt",
+      "decision": "ship",
+      "reason": "passed",
+      "model_mode": "mock",
+      "latency_ms": 2.72,
+      "retrieval_hit_rate": 1.0,
+      "tool_call_success_rate": 1.0,
+      "estimated_cost_per_request": 0.000131
+    },
+    {
+      "run_id": 11,
+      "case": "data/logs/service_logs.txt",
+      "decision": "ship",
+      "reason": "passed",
+      "model_mode": "mock",
+      "latency_ms": 2.61,
+      "retrieval_hit_rate": 1.0,
+      "tool_call_success_rate": 1.0,
+      "estimated_cost_per_request": 0.000135
+    },
+    {
+      "run_id": 12,
+      "case": "data/runbooks/db_timeout.txt",
+      "decision": "ship",
+      "reason": "passed",
+      "model_mode": "mock",
+      "latency_ms": 2.26,
+      "retrieval_hit_rate": 1.0,
+      "tool_call_success_rate": 1.0,
+      "estimated_cost_per_request": 0.000126
+    },
+    {
+      "run_id": 13,
+      "case": "data/failure_cases/missing_context.txt",
+      "decision": "hold",
+      "reason": "missing_context",
+      "model_mode": "mock",
+      "latency_ms": 1.89,
+      "retrieval_hit_rate": 0.67,
+      "tool_call_success_rate": 1.0,
+      "estimated_cost_per_request": 8e-05
+    },
+    {
+      "run_id": 14,
+      "case": "data/failure_cases/conflicting_docs.txt",
+      "decision": "escalate",
+      "reason": "conflicting_docs",
+      "model_mode": "mock",
+      "latency_ms": 3.3,
+      "retrieval_hit_rate": 1.0,
+      "tool_call_success_rate": 1.0,
+      "estimated_cost_per_request": 9.6e-05
+    },
+    {
+      "run_id": 15,
+      "case": "data/failure_cases/tool_failure.txt",
+      "decision": "escalate",
+      "reason": "tool_failure",
+      "model_mode": "mock",
+      "latency_ms": 1.64,
+      "retrieval_hit_rate": 0.0,
+      "tool_call_success_rate": 0.0,
+      "estimated_cost_per_request": 5.5e-05
+    },
+    {
+      "run_id": 16,
+      "case": "data/failure_cases/slow_tool_latency_breach.txt",
+      "decision": "hold",
+      "reason": "latency_breach",
+      "model_mode": "mock",
+      "latency_ms": 255.16,
+      "retrieval_hit_rate": 1.0,
+      "tool_call_success_rate": 1.0,
+      "estimated_cost_per_request": 8.9e-05
+    },
+    {
+      "run_id": 17,
+      "case": "data/failure_cases/unsupported_answer.txt",
+      "decision": "hold",
+      "reason": "unsupported_answer",
+      "model_mode": "mock",
+      "latency_ms": 3.1,
+      "retrieval_hit_rate": 1.0,
+      "tool_call_success_rate": 1.0,
+      "estimated_cost_per_request": 4.4e-05
+    },
+    {
+      "run_id": 18,
+      "case": "data/failure_cases/low_retrieval_hit_rate.txt",
+      "decision": "hold",
+      "reason": "low_retrieval_hit_rate",
+      "model_mode": "mock",
+      "latency_ms": 3.2,
+      "retrieval_hit_rate": 0.33,
+      "tool_call_success_rate": 1.0,
+      "estimated_cost_per_request": 7.2e-05
+    },
+    {
+      "run_id": 19,
+      "case": "data/docs/deployment_failure.txt",
+      "decision": "ship",
+      "reason": "passed",
+      "model_mode": "mock",
+      "latency_ms": 3.0,
+      "retrieval_hit_rate": 1.0,
+      "tool_call_success_rate": 1.0,
+      "estimated_cost_per_request": 0.000131
+    },
+    {
+      "run_id": 20,
+      "case": "data/logs/service_logs.txt",
+      "decision": "ship",
+      "reason": "passed",
+      "model_mode": "mock",
+      "latency_ms": 2.22,
+      "retrieval_hit_rate": 1.0,
+      "tool_call_success_rate": 1.0,
+      "estimated_cost_per_request": 0.000135
+    },
+    {
+      "run_id": 21,
+      "case": "data/runbooks/db_timeout.txt",
+      "decision": "ship",
+      "reason": "passed",
+      "model_mode": "mock",
+      "latency_ms": 2.18,
+      "retrieval_hit_rate": 1.0,
+      "tool_call_success_rate": 1.0,
+      "estimated_cost_per_request": 0.000126
+    },
+    {
+      "run_id": 22,
+      "case": "data/failure_cases/missing_context.txt",
+      "decision": "hold",
+      "reason": "missing_context",
+      "model_mode": "mock",
+      "latency_ms": 2.22,
+      "retrieval_hit_rate": 0.67,
+      "tool_call_success_rate": 1.0,
+      "estimated_cost_per_request": 8e-05
+    },
+    {
+      "run_id": 23,
+      "case": "data/failure_cases/conflicting_docs.txt",
+      "decision": "escalate",
+      "reason": "conflicting_docs",
+      "model_mode": "mock",
+      "latency_ms": 2.78,
+      "retrieval_hit_rate": 1.0,
+      "tool_call_success_rate": 1.0,
+      "estimated_cost_per_request": 9.6e-05
+    },
+    {
+      "run_id": 24,
+      "case": "data/failure_cases/tool_failure.txt",
+      "decision": "escalate",
+      "reason": "tool_failure",
+      "model_mode": "mock",
+      "latency_ms": 2.02,
+      "retrieval_hit_rate": 0.0,
+      "tool_call_success_rate": 0.0,
+      "estimated_cost_per_request": 5.5e-05
+    },
+    {
+      "run_id": 25,
+      "case": "data/failure_cases/slow_tool_latency_breach.txt",
+      "decision": "hold",
+      "reason": "latency_breach",
+      "model_mode": "mock",
+      "latency_ms": 260.03,
+      "retrieval_hit_rate": 1.0,
+      "tool_call_success_rate": 1.0,
+      "estimated_cost_per_request": 8.9e-05
+    }
+  ]
+}

@@ -1,6 +1,9 @@
 # AgentGrid: Production GenAI Support & Deployment System
 
-AgentGrid is a production-style GenAI support system that uses a LangGraph workflow, retrieval over operational documents/logs/runbooks, MCP-style tools, metrics, and an evaluation gate to classify incidents, retrieve evidence, generate action plans, and decide whether to ship, hold, or escalate.
+```text
+Query → RAG → LangGraph → MCP tools → Eval gate → ship/hold/escalate → AutoOps event
+
+AgentGrid is a production-style GenAI support system that uses a LangGraph workflow, retrieval over operational documents/logs/runbooks, MCP-style tools, LLM-native metrics, and an evaluation gate to classify incidents, retrieve evidence, generate action plans, and decide whether to ship, hold, or escalate.
 
 ## Why this project exists
 
@@ -160,4 +163,29 @@ python3 scripts/run_real_gemini_cases.py
 Outputs are saved under:
 
 reports/real_model_runs/
+
+
+Proof artifacts
+
+Mock mixed batch:
+
+python3 scripts/run_mixed_batch.py --n 25
+
+Output:
+
+reports/mixed_batch/mock_summary.json
+
+Real Gemini runs:
+
+export USE_REAL_MODEL=true
+export GEMINI_API_KEY="your_key_here"
+python3 scripts/run_real_gemini_cases.py --n 7
+
+Outputs:
+
+reports/real_model_runs/
+
+API demo response:
+
+reports/api_demo/tool_failure_api_response.json
 

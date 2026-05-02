@@ -1,0 +1,60 @@
+{
+  "agent_output": {
+    "input": "Deployment issue in payment-orchestrator.\n\nThe failure mentions quantum-ledger-cache, invisible shard leases, and an unknown approval router.\nThere is no matching documentation, log pattern, or runbook for this dependency.\n",
+    "issue": "low_retrieval",
+    "context": [
+      {
+        "source": "data/docs/deployment_failure.txt",
+        "chunk_id": "deployment_failure.txt:0",
+        "content": "Service deployment failed due to timeout connecting to database.\nMultiple retries observed. Latency spikes before failure.",
+        "score": 2
+      }
+    ],
+    "analysis": [
+      "No major issue detected"
+    ],
+    "actions": [
+      "Hold decision because retrieved evidence is insufficient"
+    ],
+    "answer": "Issue classified as low_retrieval. Findings: No major issue detected. Recommended actions: Hold decision because retrieved evidence is insufficient. Evidence sources: data/docs/deployment_failure.txt.",
+    "tool_errors": [
+      "gemini_error: 400 API key not valid. Please pass a valid API key. [reason: \"API_KEY_INVALID\"\ndomain: \"googleapis.com\"\nmetadata {\n  key: \"service\"\n  value: \"generativelanguage.googleapis.com\"\n}\n, locale: \"en-US\"\nmessage: \"API key not valid. Please pass a valid API key.\"\n]"
+    ],
+    "retrieval_latency_seconds": 0.0004889965057373047,
+    "trace": [
+      "classify_issue",
+      "retrieve_context",
+      "analyze_logs",
+      "create_action_plan",
+      "generate_answer"
+    ],
+    "model_mode": "gemini"
+  },
+  "metrics": {
+    "real_model_latency_ms": 292.48,
+    "tool_call_success_rate": 0.0,
+    "tokens_input": 41,
+    "tokens_output": 34,
+    "tokens_per_second": 256.43,
+    "estimated_cost_per_request": 7.2e-05,
+    "retrieval_hit_rate": 0.33,
+    "trace_depth": 5
+  },
+  "eval_gate": {
+    "correctness": true,
+    "citation_coverage": true,
+    "unsupported_answer": false,
+    "safety": true,
+    "retrieval_hit_rate": 0.33,
+    "final_decision": "escalate",
+    "reason": "tool_failure"
+  },
+  "autoops_event": {
+    "timestamp": "2026-05-02T01:31:25.260773+00:00",
+    "source": "agentgrid",
+    "issue_type": "tool_failure",
+    "severity": "critical",
+    "decision": "escalate",
+    "reason": "tool_failure"
+  }
+}

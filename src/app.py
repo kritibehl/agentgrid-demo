@@ -37,10 +37,13 @@ def run_file(file_path: str):
             reason=evals["reason"],
         )
 
+    mode = output.get("model_mode", "mock")
+    latency_key = "real_model_latency_ms" if mode == "gemini" else "local_mock_latency_ms"
+
     return {
         "agent_output": output,
         "metrics": {
-            "latency_seconds": round(latency, 4),
+            latency_key: round(latency * 1000, 2),
             "tool_call_success_rate": 0.0 if output.get("tool_errors") else 1.0,
             **llm_metrics,
         },

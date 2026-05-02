@@ -1,0 +1,76 @@
+{
+  "agent_output": {
+    "input": "Service deployment failed due to timeout connecting to database.\nMultiple retries observed. Latency spikes before failure.\n",
+    "issue": "timeout",
+    "context": [
+      {
+        "source": "data/docs/deployment_failure.txt",
+        "chunk_id": "deployment_failure.txt:0",
+        "content": "Service deployment failed due to timeout connecting to database.\nMultiple retries observed. Latency spikes before failure.",
+        "score": 15
+      },
+      {
+        "source": "data/logs/service_logs.txt",
+        "chunk_id": "service_logs.txt:0",
+        "content": "ERROR: DB connection timeout\nRetry attempt 1\nRetry attempt 2\nLatency exceeded threshold",
+        "score": 2
+      },
+      {
+        "source": "data/runbooks/db_timeout.txt",
+        "chunk_id": "db_timeout.txt:0",
+        "content": "If DB timeout occurs:\n1. Check DB health\n2. Restart connection pool\n3. Scale DB if needed",
+        "score": 1
+      }
+    ],
+    "analysis": [
+      "Detected timeout issue",
+      "Detected latency degradation"
+    ],
+    "actions": [
+      "Check database health and connection pool saturation",
+      "Inspect retry behavior and timeout thresholds",
+      "Restart or scale the affected dependency if saturation is confirmed",
+      "Escalate if latency or error rate remains above threshold"
+    ],
+    "answer": "Issue classified as timeout. Findings: Detected timeout issue, Detected latency degradation. Recommended actions: Check database health and connection pool saturation, Inspect retry behavior and timeout thresholds, Restart or scale the affected dependency if saturation is confirmed, Escalate if latency or error rate remains above threshold. Evidence sources: data/docs/deployment_failure.txt, data/logs/service_logs.txt, data/runbooks/db_timeout.txt.",
+    "tool_errors": [
+      "gemini_error: 400 API key not valid. Please pass a valid API key. [reason: \"API_KEY_INVALID\"\ndomain: \"googleapis.com\"\nmetadata {\n  key: \"service\"\n  value: \"generativelanguage.googleapis.com\"\n}\n, locale: \"en-US\"\nmessage: \"API key not valid. Please pass a valid API key.\"\n]"
+    ],
+    "retrieval_latency_seconds": 0.0009200572967529297,
+    "trace": [
+      "classify_issue",
+      "retrieve_context",
+      "analyze_logs",
+      "create_action_plan",
+      "generate_answer"
+    ],
+    "model_mode": "gemini"
+  },
+  "metrics": {
+    "real_model_latency_ms": 238.32,
+    "tool_call_success_rate": 0.0,
+    "tokens_input": 19,
+    "tokens_output": 81,
+    "tokens_per_second": 419.6,
+    "estimated_cost_per_request": 0.000131,
+    "retrieval_hit_rate": 1.0,
+    "trace_depth": 5
+  },
+  "eval_gate": {
+    "correctness": true,
+    "citation_coverage": true,
+    "unsupported_answer": false,
+    "safety": true,
+    "retrieval_hit_rate": 1.0,
+    "final_decision": "escalate",
+    "reason": "tool_failure"
+  },
+  "autoops_event": {
+    "timestamp": "2026-05-02T01:31:25.500783+00:00",
+    "source": "agentgrid",
+    "issue_type": "tool_failure",
+    "severity": "critical",
+    "decision": "escalate",
+    "reason": "tool_failure"
+  }
+}

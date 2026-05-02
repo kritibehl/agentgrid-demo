@@ -1,0 +1,66 @@
+{
+  "agent_output": {
+    "input": "Deployment failed in service checkout-api.\nError mentions unknown dependency \"ledger-cache-v7\".\nNo matching runbook or operational document is available.\n",
+    "issue": "missing_context",
+    "context": [
+      {
+        "source": "data/docs/deployment_failure.txt",
+        "chunk_id": "deployment_failure.txt:0",
+        "content": "Service deployment failed due to timeout connecting to database.\nMultiple retries observed. Latency spikes before failure.",
+        "score": 3
+      },
+      {
+        "source": "data/logs/service_logs.txt",
+        "chunk_id": "service_logs.txt:0",
+        "content": "ERROR: DB connection timeout\nRetry attempt 1\nRetry attempt 2\nLatency exceeded threshold",
+        "score": 1
+      }
+    ],
+    "analysis": [
+      "No major issue detected"
+    ],
+    "actions": [
+      "Hold decision and request missing runbook or dependency context"
+    ],
+    "answer": "Issue classified as missing_context. Findings: No major issue detected. Recommended actions: Hold decision and request missing runbook or dependency context. Evidence sources: data/docs/deployment_failure.txt, data/logs/service_logs.txt.",
+    "tool_errors": [
+      "gemini_error: 400 API key not valid. Please pass a valid API key. [reason: \"API_KEY_INVALID\"\ndomain: \"googleapis.com\"\nmetadata {\n  key: \"service\"\n  value: \"generativelanguage.googleapis.com\"\n}\n, locale: \"en-US\"\nmessage: \"API key not valid. Please pass a valid API key.\"\n]"
+    ],
+    "retrieval_latency_seconds": 0.001112222671508789,
+    "trace": [
+      "classify_issue",
+      "retrieve_context",
+      "analyze_logs",
+      "create_action_plan",
+      "generate_answer"
+    ],
+    "model_mode": "gemini"
+  },
+  "metrics": {
+    "real_model_latency_ms": 249.67,
+    "tool_call_success_rate": 0.0,
+    "tokens_input": 29,
+    "tokens_output": 44,
+    "tokens_per_second": 292.39,
+    "estimated_cost_per_request": 8e-05,
+    "retrieval_hit_rate": 0.67,
+    "trace_depth": 5
+  },
+  "eval_gate": {
+    "correctness": true,
+    "citation_coverage": true,
+    "unsupported_answer": false,
+    "safety": true,
+    "retrieval_hit_rate": 0.67,
+    "final_decision": "escalate",
+    "reason": "tool_failure"
+  },
+  "autoops_event": {
+    "timestamp": "2026-05-02T01:31:24.461645+00:00",
+    "source": "agentgrid",
+    "issue_type": "tool_failure",
+    "severity": "critical",
+    "decision": "escalate",
+    "reason": "tool_failure"
+  }
+}

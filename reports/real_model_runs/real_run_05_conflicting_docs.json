@@ -1,0 +1,73 @@
+{
+  "agent_output": {
+    "input": "Incident: DB timeout during deployment.\n\nDoc A says restart the connection pool immediately.\nDoc B says do not restart the connection pool during active migration.\n",
+    "issue": "conflicting_docs",
+    "context": [
+      {
+        "source": "data/runbooks/db_timeout.txt",
+        "chunk_id": "db_timeout.txt:0",
+        "content": "If DB timeout occurs:\n1. Check DB health\n2. Restart connection pool\n3. Scale DB if needed",
+        "score": 5
+      },
+      {
+        "source": "data/logs/service_logs.txt",
+        "chunk_id": "service_logs.txt:0",
+        "content": "ERROR: DB connection timeout\nRetry attempt 1\nRetry attempt 2\nLatency exceeded threshold",
+        "score": 3
+      },
+      {
+        "source": "data/docs/deployment_failure.txt",
+        "chunk_id": "deployment_failure.txt:0",
+        "content": "Service deployment failed due to timeout connecting to database.\nMultiple retries observed. Latency spikes before failure.",
+        "score": 2
+      }
+    ],
+    "analysis": [
+      "Detected timeout issue",
+      "Detected conflicting operational guidance"
+    ],
+    "actions": [
+      "Escalate to owner because retrieved guidance conflicts"
+    ],
+    "answer": "Issue classified as conflicting_docs. Findings: Detected timeout issue, Detected conflicting operational guidance. Recommended actions: Escalate to owner because retrieved guidance conflicts. Evidence sources: data/runbooks/db_timeout.txt, data/logs/service_logs.txt, data/docs/deployment_failure.txt.",
+    "tool_errors": [
+      "gemini_error: 400 API key not valid. Please pass a valid API key. [reason: \"API_KEY_INVALID\"\ndomain: \"googleapis.com\"\nmetadata {\n  key: \"service\"\n  value: \"generativelanguage.googleapis.com\"\n}\n, locale: \"en-US\"\nmessage: \"API key not valid. Please pass a valid API key.\"\n]"
+    ],
+    "retrieval_latency_seconds": 0.0007939338684082031,
+    "trace": [
+      "classify_issue",
+      "retrieve_context",
+      "analyze_logs",
+      "create_action_plan",
+      "generate_answer"
+    ],
+    "model_mode": "gemini"
+  },
+  "metrics": {
+    "real_model_latency_ms": 271.38,
+    "tool_call_success_rate": 0.0,
+    "tokens_input": 29,
+    "tokens_output": 54,
+    "tokens_per_second": 305.85,
+    "estimated_cost_per_request": 9.6e-05,
+    "retrieval_hit_rate": 1.0,
+    "trace_depth": 5
+  },
+  "eval_gate": {
+    "correctness": true,
+    "citation_coverage": true,
+    "unsupported_answer": false,
+    "safety": true,
+    "retrieval_hit_rate": 1.0,
+    "final_decision": "escalate",
+    "reason": "tool_failure"
+  },
+  "autoops_event": {
+    "timestamp": "2026-05-02T01:31:24.734337+00:00",
+    "source": "agentgrid",
+    "issue_type": "tool_failure",
+    "severity": "critical",
+    "decision": "escalate",
+    "reason": "tool_failure"
+  }
+}

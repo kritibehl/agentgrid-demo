@@ -1,0 +1,134 @@
+{
+  "use_real_model": true,
+  "gemini_model": "gemini-2.5-flash",
+  "total_runs": 10,
+  "decision_counts": {
+    "escalate": 10
+  },
+  "top_failure_reason": "tool_failure",
+  "reason_counts": {
+    "tool_failure": 10
+  },
+  "runs": [
+    {
+      "run_id": 1,
+      "case": "data/docs/deployment_failure.txt",
+      "output": "reports/real_model_runs/real_run_01_deployment_failure.json",
+      "model_mode": "gemini",
+      "decision": "escalate",
+      "reason": "tool_failure",
+      "real_model_latency_ms": 535.0,
+      "tokens_per_second": 186.92,
+      "estimated_cost_per_request": 0.000131,
+      "retrieval_hit_rate": 1.0
+    },
+    {
+      "run_id": 2,
+      "case": "data/logs/service_logs.txt",
+      "output": "reports/real_model_runs/real_run_02_service_logs.json",
+      "model_mode": "gemini",
+      "decision": "escalate",
+      "reason": "tool_failure",
+      "real_model_latency_ms": 261.27,
+      "tokens_per_second": 378.92,
+      "estimated_cost_per_request": 0.000135,
+      "retrieval_hit_rate": 1.0
+    },
+    {
+      "run_id": 3,
+      "case": "data/runbooks/db_timeout.txt",
+      "output": "reports/real_model_runs/real_run_03_db_timeout.json",
+      "model_mode": "gemini",
+      "decision": "escalate",
+      "reason": "tool_failure",
+      "real_model_latency_ms": 264.89,
+      "tokens_per_second": 369.97,
+      "estimated_cost_per_request": 0.000126,
+      "retrieval_hit_rate": 1.0
+    },
+    {
+      "run_id": 4,
+      "case": "data/failure_cases/missing_context.txt",
+      "output": "reports/real_model_runs/real_run_04_missing_context.json",
+      "model_mode": "gemini",
+      "decision": "escalate",
+      "reason": "tool_failure",
+      "real_model_latency_ms": 249.67,
+      "tokens_per_second": 292.39,
+      "estimated_cost_per_request": 8e-05,
+      "retrieval_hit_rate": 0.67
+    },
+    {
+      "run_id": 5,
+      "case": "data/failure_cases/conflicting_docs.txt",
+      "output": "reports/real_model_runs/real_run_05_conflicting_docs.json",
+      "model_mode": "gemini",
+      "decision": "escalate",
+      "reason": "tool_failure",
+      "real_model_latency_ms": 271.38,
+      "tokens_per_second": 305.85,
+      "estimated_cost_per_request": 9.6e-05,
+      "retrieval_hit_rate": 1.0
+    },
+    {
+      "run_id": 6,
+      "case": "data/failure_cases/unsupported_answer.txt",
+      "output": "reports/real_model_runs/real_run_06_unsupported_answer.json",
+      "model_mode": "gemini",
+      "decision": "escalate",
+      "reason": "tool_failure",
+      "real_model_latency_ms": 231.67,
+      "tokens_per_second": 185.61,
+      "estimated_cost_per_request": 4.4e-05,
+      "retrieval_hit_rate": 1.0
+    },
+    {
+      "run_id": 7,
+      "case": "data/failure_cases/low_retrieval_hit_rate.txt",
+      "output": "reports/real_model_runs/real_run_07_low_retrieval_hit_rate.json",
+      "model_mode": "gemini",
+      "decision": "escalate",
+      "reason": "tool_failure",
+      "real_model_latency_ms": 292.48,
+      "tokens_per_second": 256.43,
+      "estimated_cost_per_request": 7.2e-05,
+      "retrieval_hit_rate": 0.33
+    },
+    {
+      "run_id": 8,
+      "case": "data/docs/deployment_failure.txt",
+      "output": "reports/real_model_runs/real_run_08_deployment_failure.json",
+      "model_mode": "gemini",
+      "decision": "escalate",
+      "reason": "tool_failure",
+      "real_model_latency_ms": 238.32,
+      "tokens_per_second": 419.6,
+      "estimated_cost_per_request": 0.000131,
+      "retrieval_hit_rate": 1.0
+    },
+    {
+      "run_id": 9,
+      "case": "data/logs/service_logs.txt",
+      "output": "reports/real_model_runs/real_run_09_service_logs.json",
+      "model_mode": "gemini",
+      "decision": "escalate",
+      "reason": "tool_failure",
+      "real_model_latency_ms": 282.08,
+      "tokens_per_second": 350.97,
+      "estimated_cost_per_request": 0.000135,
+      "retrieval_hit_rate": 1.0
+    },
+    {
+      "run_id": 10,
+      "case": "data/runbooks/db_timeout.txt",
+      "output": "reports/real_model_runs/real_run_10_db_timeout.json",
+      "model_mode": "gemini",
+      "decision": "escalate",
+      "reason": "tool_failure",
+      "real_model_latency_ms": 225.66,
+      "tokens_per_second": 434.28,
+      "estimated_cost_per_request": 0.000126,
+      "retrieval_hit_rate": 1.0
+    }
+  ]
+}
