@@ -1,0 +1,4 @@
+Incident: DB timeout during deployment.
+
+Doc A says restart the connection pool immediately.
+Doc B says do not restart the connection pool during active migration.

@@ -1,0 +1,4 @@
+SIMULATE_SLOW_TOOL
+
+Deployment logs show DB timeout and latency spike.
+The retrieval tool should exceed the latency budget.

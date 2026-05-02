@@ -1,0 +1,4 @@
+Deployment issue in payment-orchestrator.
+
+The failure mentions quantum-ledger-cache, invisible shard leases, and an unknown approval router.
+There is no matching documentation, log pattern, or runbook for this dependency.

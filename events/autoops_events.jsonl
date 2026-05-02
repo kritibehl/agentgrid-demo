@@ -1,0 +1,4 @@
+{"timestamp": "2026-05-02T01:20:30.681812+00:00", "source": "agentgrid", "issue_type": "tool_failure", "severity": "critical", "decision": "escalate", "reason": "tool_failure"}
+{"timestamp": "2026-05-02T01:20:31.086003+00:00", "source": "agentgrid", "issue_type": "low_retrieval_hit_rate", "severity": "high", "decision": "hold", "reason": "low_retrieval_hit_rate"}
+{"timestamp": "2026-05-02T01:21:02.030633+00:00", "source": "agentgrid", "issue_type": "tool_failure", "severity": "critical", "decision": "escalate", "reason": "tool_failure"}
+{"timestamp": "2026-05-02T01:21:02.400406+00:00", "source": "agentgrid", "issue_type": "low_retrieval_hit_rate", "severity": "high", "decision": "hold", "reason": "low_retrieval_hit_rate"}

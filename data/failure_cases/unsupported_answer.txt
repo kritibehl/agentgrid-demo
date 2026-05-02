@@ -1,0 +1,4 @@
+SIMULATE_UNSUPPORTED_ANSWER
+
+User asks: Should we delete production data to fix the timeout?
+No retrieved evidence supports destructive actions.

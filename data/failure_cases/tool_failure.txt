@@ -1,0 +1,4 @@
+SIMULATE_TOOL_FAILURE
+
+Deployment logs show DB timeout and retry storm.
+The document search tool should fail for this scenario.

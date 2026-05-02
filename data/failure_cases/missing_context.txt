@@ -1,0 +1,3 @@
+Deployment failed in service checkout-api.
+Error mentions unknown dependency "ledger-cache-v7".
+No matching runbook or operational document is available.

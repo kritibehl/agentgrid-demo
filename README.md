@@ -105,3 +105,59 @@ curl -X POST "http://127.0.0.1:8000/run?input=DB%20timeout%20failure"
 Resume summary
 
 Built a production-style GenAI support and deployment system using LangGraph with RAG over documents, logs, and runbooks, MCP-style tools for retrieval/log analysis/action planning, observability metrics, and an eval gate for correctness, citation coverage, hallucination risk, safety, and ship/hold/escalate decisions.
+
+## Updated Architecture
+
+```text
+Query
+  |
+  v
+RAG over docs/logs/runbooks
+  |
+  v
+LangGraph workflow
+  |
+  v
+MCP-style tools
+  |
+  v
+Eval gate
+  |
+  v
+Decision: ship / hold / escalate
+  |
+  v
+AutoOps event emission
+API demo
+
+Run the API:
+
+uvicorn src.api.server:app --reload
+
+Request:
+
+curl -s -X POST http://127.0.0.1:8000/agent/run \
+  -H "Content-Type: application/json" \
+  -d '{"input":"Deployment failed because DB timeout caused retry storm and latency spike."}' \
+  | python3 -m json.tool
+
+The response includes:
+
+agent_output
+metrics
+eval_gate
+autoops_event
+Real Gemini mode
+
+Mock mode is the default.
+
+To run with Gemini:
+
+export USE_REAL_MODEL=true
+export GEMINI_API_KEY="your_key_here"
+python3 scripts/run_real_gemini_cases.py
+
+Outputs are saved under:
+
+reports/real_model_runs/
+
