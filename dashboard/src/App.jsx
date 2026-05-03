@@ -132,10 +132,21 @@ function App() {
         </div>
 
         <h1>
-          <span>Production GenAI</span>{" "}
-          <span>Incident Intelligence</span>{" "}
+          <span>Production</span>
+          <span>GenAI</span>
+          <span>Incident</span>
+          <span>Intelligence</span>
           <span>System</span>
         </h1>
+
+        <p className="positioningLine">
+          Built to model how production AI systems detect failures, block unsafe outputs,
+          and convert them into operational decisions.
+        </p>
+
+        <p className="trustLine">
+          Live Cloud Run backend · real event ingestion · not a static demo
+        </p>
 
         <p className="subtitle">
           AgentGrid routes GenAI eval-gate decisions into AutoOps on Google Cloud Run,
@@ -220,10 +231,10 @@ function App() {
 
         <div className="actions">
           <button onClick={triggerToolFailure} disabled={running}>
-            {running ? "Running system check..." : "Trigger Tool Failure"}
+            {running ? "Running system check..." : "Simulate Tool Failure"}
           </button>
           <button className="secondary" onClick={triggerRetrievalFailure} disabled={running}>
-            Trigger Retrieval Failure
+            Simulate Retrieval Failure
           </button>
           <button className="secondary" onClick={loadMetrics} disabled={running}>
             Refresh Cloud Metrics
@@ -251,7 +262,7 @@ function App() {
         </div>
 
         <div className="bars">
-          {breakdown.length === 0 && <p>No events yet. Trigger a system check.</p>}
+          {breakdown.length === 0 && <p>No events yet. Run a scenario.</p>}
           {breakdown.map((item) => (
             <div className="barRow" key={item.agent_decision}>
               <span>{item.agent_decision}</span>
@@ -296,7 +307,7 @@ function App() {
             </div>
           </div>
         ) : (
-          <p className="muted">Trigger a system check to emit a live AutoOps event.</p>
+          <p className="muted">Run a scenario to emit a live AutoOps event.</p>
         )}
       </section>
 

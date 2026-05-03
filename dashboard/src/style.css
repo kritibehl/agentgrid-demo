@@ -414,3 +414,55 @@ button:disabled {
   padding: 12px;
   border-radius: 12px;
 }
+
+/* Final recruiter polish */
+.hero h1 {
+  word-spacing: 0.08em;
+}
+
+.hero h1 span {
+  display: inline-block;
+  margin-right: 0.12em;
+}
+
+.positioningLine {
+  margin-top: 12px;
+  max-width: 820px;
+  color: #d9ecff;
+  font-size: 18px;
+  line-height: 1.55;
+  font-weight: 650;
+}
+
+.trustLine {
+  margin-top: 10px;
+  color: #9ec8ff;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.linkRow {
+  align-items: center;
+}
+
+.linkRow a + a::before {
+  content: "·";
+  color: #8ea5bf;
+  margin-right: 12px;
+}
+
+.queryBox {
+  padding: 20px;
+  border: 1px solid rgba(88, 166, 255, 0.25);
+  background: rgba(88, 166, 255, 0.08);
+}
+
+.queryRow input {
+  min-height: 52px;
+  font-weight: 600;
+}
+
+.queryRow button {
+  min-height: 52px;
+  min-width: 120px;
+}
