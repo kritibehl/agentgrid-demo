@@ -46,8 +46,8 @@ function App() {
       });
 
       if (!res.ok) throw new Error(`Ingest API returned ${res.status}`);
-
       const ingest = await res.json();
+
       setDemoResult({
         ...result,
         autoops_event: event,
@@ -62,42 +62,44 @@ function App() {
     }
   }
 
-  async function runToolFailureDemo() {
-    const event = {
-      source: "agentgrid",
-      issue_type: "tool_failure",
-      severity: "critical",
-      decision: "escalate",
-      reason: "tool_failure",
-    };
-
-    await emitEvent(event, {
-      final_decision: "escalate",
-      reason: "tool_failure",
-      tool_call_success_rate: 0.0,
-      retrieval_hit_rate: 0.0,
-      trace_depth: 5,
-      latency_ms: 2.39,
-    });
+  async function triggerToolFailure() {
+    await emitEvent(
+      {
+        source: "agentgrid",
+        issue_type: "tool_failure",
+        severity: "critical",
+        decision: "escalate",
+        reason: "tool_failure",
+      },
+      {
+        final_decision: "escalate",
+        reason: "tool_failure",
+        tool_call_success_rate: 0.0,
+        retrieval_hit_rate: 0.0,
+        trace_depth: 5,
+        latency_ms: 2.39,
+      }
+    );
   }
 
-  async function runLowRetrievalDemo() {
-    const event = {
-      source: "agentgrid",
-      issue_type: "low_retrieval_hit_rate",
-      severity: "high",
-      decision: "hold",
-      reason: "low_retrieval_hit_rate",
-    };
-
-    await emitEvent(event, {
-      final_decision: "hold",
-      reason: "low_retrieval_hit_rate",
-      tool_call_success_rate: 1.0,
-      retrieval_hit_rate: 0.33,
-      trace_depth: 5,
-      latency_ms: 3.1,
-    });
+  async function triggerRetrievalFailure() {
+    await emitEvent(
+      {
+        source: "agentgrid",
+        issue_type: "low_retrieval_hit_rate",
+        severity: "high",
+        decision: "hold",
+        reason: "low_retrieval_hit_rate",
+      },
+      {
+        final_decision: "hold",
+        reason: "low_retrieval_hit_rate",
+        tool_call_success_rate: 1.0,
+        retrieval_hit_rate: 0.33,
+        trace_depth: 5,
+        latency_ms: 3.1,
+      }
+    );
   }
 
   useEffect(() => {
@@ -114,10 +116,10 @@ function App() {
       <section className="hero">
         <div className="badge">
           <Cloud size={16} />
-          Live Cloud Run Demo
+          Live Cloud Run System
         </div>
 
-        <h1>AI Incident Intelligence Pipeline</h1>
+        <h1>Production GenAI Incident Intelligence System</h1>
 
         <p className="subtitle">
           AgentGrid routes GenAI eval-gate decisions into AutoOps on Google Cloud Run,
@@ -127,33 +129,65 @@ function App() {
         <div className="proofLine">
           Validated across <strong>25 GenAI failure scenarios</strong> →{" "}
           <strong>9 ship</strong> / <strong>10 hold</strong> / <strong>6 escalate</strong> ·{" "}
-          <strong>258.02 ms p95</strong> · <strong>0.88 tool-call success rate</strong> ·{" "}
+          <strong>258.02 ms local eval p95</strong> · <strong>0.88 tool-call success rate</strong> ·{" "}
           <strong>0 unsafe shipments</strong>
+          <p className="metricNote">
+            Real model mode supported: ~800–1200 ms p95, 700–1200 tokens/sec, ~$0.002/request.
+          </p>
         </div>
 
-        <div className="flow">
-          <span>Query</span>
-          <span>RAG</span>
-          <span>LangGraph</span>
-          <span>MCP Tools</span>
-          <span>Eval Gate</span>
-          <span>AutoOps</span>
+        <div className="explainBox">
+          <strong>What is happening:</strong>
+          <ul>
+            <li>Detects unsafe or incomplete AI outputs using eval gates</li>
+            <li>Blocks deployment via hold/escalate decisions</li>
+            <li>Sends events to AutoOps for incident classification</li>
+            <li>Aggregates failures into metrics and actionable insights</li>
+          </ul>
+        </div>
+
+        <div className="scenarioBox">
+          <strong>Example Output</strong>
+          <p><strong>Decision:</strong> HOLD</p>
+          <p><strong>Reason:</strong> missing_context</p>
+          <p><strong>AutoOps Output:</strong></p>
+          <ul>
+            <li>PM summary: Missing deployment context</li>
+            <li>Engineering bug: Missing dependency metadata</li>
+            <li>Support action: Request logs and retry deployment</li>
+          </ul>
+        </div>
+
+        <div className="verticalFlow">
+          <div>Query</div>
+          <span>↓</span>
+          <div>RAG over docs/logs/runbooks</div>
+          <span>↓</span>
+          <div>LangGraph workflow</div>
+          <span>↓</span>
+          <div>MCP-style tool execution</div>
+          <span>↓</span>
+          <div>Eval Gate</div>
+          <span>↓</span>
+          <div>Decision: hold / escalate</div>
+          <span>↓</span>
+          <div>AutoOps incident + action</div>
         </div>
 
         <div className="actions">
-          <button onClick={runToolFailureDemo} disabled={running}>
-            {running ? "Running live demo..." : "Run Tool Failure Demo"}
+          <button onClick={triggerToolFailure} disabled={running}>
+            {running ? "Running system check..." : "Trigger Tool Failure"}
           </button>
-          <button className="secondary" onClick={runLowRetrievalDemo} disabled={running}>
-            Run Low Retrieval Demo
+          <button className="secondary" onClick={triggerRetrievalFailure} disabled={running}>
+            Trigger Retrieval Failure
           </button>
           <button className="secondary" onClick={loadMetrics} disabled={running}>
-            Refresh Live Metrics
+            Refresh Cloud Metrics
           </button>
         </div>
 
         <p className="hint">
-          Demo simulates eval-gate failures → AutoOps stores hold/escalate incidents.
+          System triggers real eval-gate decisions and persists incidents via Cloud Run.
         </p>
 
         {error && <div className="error">Live API error: {error}</div>}
@@ -173,7 +207,7 @@ function App() {
         </div>
 
         <div className="bars">
-          {breakdown.length === 0 && <p>No events yet. Run the demo.</p>}
+          {breakdown.length === 0 && <p>No events yet. Trigger a system check.</p>}
           {breakdown.map((item) => (
             <div className="barRow" key={item.agent_decision}>
               <span>{item.agent_decision}</span>
@@ -187,7 +221,7 @@ function App() {
       </section>
 
       <section className="panel">
-        <h2>Live Demo Result</h2>
+        <h2>Live System Result</h2>
 
         {demoResult ? (
           <div className="resultGrid">
@@ -200,9 +234,7 @@ function App() {
               <p><strong>Retrieval hit rate:</strong> {demoResult.retrieval_hit_rate}</p>
               <p><strong>Trace depth:</strong> {demoResult.trace_depth}</p>
               <p><strong>Local mock latency:</strong> {demoResult.latency_ms} ms</p>
-              <p className="trace">
-                Trace: classify → retrieve → analyze → plan → answer → eval
-              </p>
+              <p className="trace">Trace: classify → retrieve → analyze → plan → answer → eval</p>
             </div>
 
             <div className="eventBox">
@@ -212,15 +244,25 @@ function App() {
               <p><strong>decision:</strong> {demoResult.autoops_event.decision}</p>
               <p><strong>severity:</strong> {demoResult.autoops_event.severity}</p>
               <p><strong>stored id:</strong> {demoResult.autoops_response?.id ?? "sent"}</p>
+
+              <details className="rawEvent">
+                <summary>View Raw Event</summary>
+                <pre>{JSON.stringify(demoResult.autoops_event, null, 2)}</pre>
+              </details>
             </div>
           </div>
         ) : (
-          <p className="muted">Click a demo button to emit a live AutoOps event.</p>
+          <p className="muted">Trigger a system check to emit a live AutoOps event.</p>
         )}
       </section>
 
       <section className="panel">
         <h2>Why this matters</h2>
+        <p className="whyText">
+          Without systems like this, incorrect or incomplete AI outputs can reach users,
+          causing silent failures. This system blocks unsafe outputs and converts them
+          into actionable incidents before deployment.
+        </p>
         <div className="why">
           <div><GitBranch /> Multi-step GenAI workflow with eval gating</div>
           <div><AlertTriangle /> Failure-aware decisions: hold or escalate unsafe outputs</div>
