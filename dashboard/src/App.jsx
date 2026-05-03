@@ -20,6 +20,7 @@ function App() {
   const [running, setRunning] = useState(false);
   const [demoResult, setDemoResult] = useState(null);
   const [error, setError] = useState("");
+  const [query, setQuery] = useState("Why did deployment fail?");
 
   async function loadMetrics() {
     try {
@@ -102,6 +103,17 @@ function App() {
     );
   }
 
+
+  async function analyzeQuery() {
+    const lowered = query.toLowerCase();
+
+    if (lowered.includes("missing") || lowered.includes("context") || lowered.includes("why")) {
+      await triggerRetrievalFailure();
+    } else {
+      await triggerToolFailure();
+    }
+  }
+
   useEffect(() => {
     loadMetrics();
   }, []);
@@ -119,12 +131,29 @@ function App() {
           Live Cloud Run System
         </div>
 
-        <h1>Production GenAI Incident Intelligence System</h1>
+        <h1>
+          <span>Production GenAI</span>{" "}
+          <span>Incident Intelligence</span>{" "}
+          <span>System</span>
+        </h1>
 
         <p className="subtitle">
           AgentGrid routes GenAI eval-gate decisions into AutoOps on Google Cloud Run,
           where hold/escalate events are persisted and exposed through live metrics.
         </p>
+
+
+        <div className="linkRow">
+          <a href="https://github.com/kritibehl/agentgrid" target="_blank" rel="noreferrer">
+            AgentGrid GitHub
+          </a>
+          <a href="https://github.com/kritibehl/AutoOps-Insight" target="_blank" rel="noreferrer">
+            AutoOps GitHub
+          </a>
+          <a href="https://kriti-portfolio-six.vercel.app/" target="_blank" rel="noreferrer">
+            Portfolio
+          </a>
+        </div>
 
         <div className="proofLine">
           Validated across <strong>25 GenAI failure scenarios</strong> →{" "}
@@ -132,7 +161,7 @@ function App() {
           <strong>258.02 ms local eval p95</strong> · <strong>0.88 tool-call success rate</strong> ·{" "}
           <strong>0 unsafe shipments</strong>
           <p className="metricNote">
-            Real model mode supported: ~800–1200 ms p95, 700–1200 tokens/sec, ~$0.002/request.
+            Real-model runs saved under reports/real_model_runs; mock mode powers this public demo for deterministic evaluation.
           </p>
         </div>
 
@@ -172,6 +201,21 @@ function App() {
           <div>Decision: hold / escalate</div>
           <span>↓</span>
           <div>AutoOps incident + action</div>
+        </div>
+
+
+        <div className="queryBox">
+          <label>Enter query</label>
+          <div className="queryRow">
+            <input
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              placeholder="Why did deployment fail?"
+            />
+            <button onClick={analyzeQuery} disabled={running}>
+              Analyze
+            </button>
+          </div>
         </div>
 
         <div className="actions">
