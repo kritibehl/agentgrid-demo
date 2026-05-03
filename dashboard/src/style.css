@@ -561,3 +561,112 @@ button:disabled {
     grid-template-columns: 1fr;
   }
 }
+
+/* Final visual polish */
+.linkRow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.linkRow a {
+  display: inline-flex;
+  align-items: center;
+  padding: 10px 14px;
+  border-radius: 999px;
+  background: rgba(88, 166, 255, 0.13);
+  border: 1px solid rgba(88, 166, 255, 0.28);
+  color: #d9ecff;
+  text-decoration: none;
+  font-weight: 800;
+}
+
+.linkRow .dot {
+  color: #7f93ad;
+  font-weight: 900;
+}
+
+.queryBox {
+  margin-top: 28px;
+  padding: 24px;
+  border-radius: 22px;
+  background: linear-gradient(135deg, rgba(88,166,255,0.12), rgba(255,255,255,0.05));
+  border: 1px solid rgba(128, 185, 255, 0.35);
+  box-shadow: 0 18px 50px rgba(0,0,0,0.22);
+}
+
+.queryRow {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 140px;
+  gap: 16px;
+  align-items: center;
+}
+
+.queryRow input {
+  height: 58px;
+  padding: 0 20px;
+  border-radius: 18px;
+  border: 1px solid rgba(214, 232, 255, 0.26);
+  background: rgba(3, 10, 22, 0.72);
+  color: #f2f7ff;
+  font-size: 16px;
+  font-weight: 700;
+  outline: none;
+}
+
+.queryRow input:focus {
+  border-color: rgba(88,166,255,0.85);
+  box-shadow: 0 0 0 4px rgba(88,166,255,0.16);
+}
+
+.queryRow button {
+  height: 58px;
+  border-radius: 18px;
+  font-size: 16px;
+}
+
+.hookLine {
+  margin-top: 12px;
+  max-width: 860px;
+  color: #ffdf9b;
+  font-size: 17px;
+  line-height: 1.55;
+  font-weight: 800;
+}
+
+.scenarioBox li {
+  margin: 8px 0;
+}
+
+.decisionPill {
+  display: inline-flex;
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-weight: 900;
+  font-size: 12px;
+}
+
+.decisionEscalate {
+  color: #ff9a9a;
+  background: rgba(255, 94, 94, 0.16);
+  border: 1px solid rgba(255, 94, 94, 0.3);
+}
+
+.decisionHold {
+  color: #ffe29a;
+  background: rgba(255, 205, 86, 0.15);
+  border: 1px solid rgba(255, 205, 86, 0.28);
+}
+
+.decisionShip {
+  color: #a7ffbf;
+  background: rgba(74, 222, 128, 0.14);
+  border: 1px solid rgba(74, 222, 128, 0.28);
+}
+
+@media (max-width: 650px) {
+  .queryRow {
+    grid-template-columns: 1fr;
+  }
+}

@@ -135,6 +135,10 @@ function App() {
           and convert them into operational decisions.
         </p>
 
+        <p className="hookLine">
+          Without systems like this, incorrect or incomplete AI outputs can reach users, causing silent failures.
+        </p>
+
         <p className="trustLine">
           Live Cloud Run backend · real event ingestion · not a static demo
         </p>
@@ -146,9 +150,9 @@ function App() {
 
         <div className="linkRow">
           <a href="https://github.com/kritibehl/agentgrid" target="_blank" rel="noreferrer">AgentGrid GitHub</a>
-          <span>·</span>
+          <span className="dot">·</span>
           <a href="https://github.com/kritibehl/AutoOps-Insight" target="_blank" rel="noreferrer">AutoOps GitHub</a>
-          <span>·</span>
+          <span className="dot">·</span>
           <a href="https://kriti-portfolio-six.vercel.app/" target="_blank" rel="noreferrer">Portfolio</a>
         </div>
 
@@ -182,9 +186,9 @@ function App() {
           <p><strong>Reason:</strong> missing_context</p>
           <p><strong>AutoOps Output:</strong></p>
           <ul>
-            <li>PM summary: Missing deployment context</li>
-            <li>Engineering bug: Missing dependency metadata</li>
-            <li>Support action: Request logs and retry deployment</li>
+            <li><strong>PM summary:</strong> Missing deployment context</li>
+            <li><strong>Engineering bug:</strong> Missing dependency metadata</li>
+            <li><strong>Support action:</strong> Request logs and retry deployment</li>
           </ul>
         </div>
 
@@ -252,7 +256,15 @@ function App() {
           {breakdown.length === 0 && <p>No events yet. Run a scenario.</p>}
           {breakdown.map((item) => (
             <div className="barRow" key={item.agent_decision}>
-              <span>{item.agent_decision}</span>
+              <span className={`decisionPill ${
+                item.agent_decision === "escalate"
+                  ? "decisionEscalate"
+                  : item.agent_decision === "hold"
+                  ? "decisionHold"
+                  : "decisionShip"
+              }`}>
+                {item.agent_decision}
+              </span>
               <div className="bar">
                 <div style={{ width: `${Math.min(item.count * 8, 100)}%` }} />
               </div>
