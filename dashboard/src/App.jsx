@@ -158,13 +158,30 @@ function App() {
 
         <div className="proofMetrics">
           <h2>Proof Metrics</h2>
-          <ul>
-            <li>25 validation runs</li>
-            <li>9 ship / 10 hold / 6 escalate</li>
-            <li>p95 latency: 258 ms</li>
-            <li>tool success rate: 0.88</li>
-            <li>0 unsafe shipments</li>
-          </ul>
+          <p className="proofIntro">
+            Validated on controlled failure scenarios + live Cloud Run ingestion.
+          </p>
+          <div className="proofGrid">
+            <div>
+              <strong>Historical validation</strong>
+              <ul>
+                <li>25 validation runs</li>
+                <li>9 ship / 10 hold / 6 escalate</li>
+                <li>p95 latency: 258 ms</li>
+                <li>tool success rate: 0.88</li>
+                <li>0 unsafe shipments</li>
+              </ul>
+            </div>
+            <div>
+              <strong>Live session</strong>
+              <ul>
+                <li>{ingested} events ingested</li>
+                <li>{escalate} escalations</li>
+                <li>{hold} holds</li>
+                <li>0 unsafe shipments</li>
+              </ul>
+            </div>
+          </div>
           <p>
             Real-model runs saved under <code>reports/real_model_runs</code>; mock mode powers this public demo for deterministic evaluation.
           </p>
