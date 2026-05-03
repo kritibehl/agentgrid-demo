@@ -12,7 +12,8 @@ import {
 } from "lucide-react";
 import "./style.css";
 
-const AUTOOPS_API = import.meta.env.VITE_AUTOOPS_API_URL || "/api";
+const METRICS_URL = "/api/autoops/metrics";
+const INGEST_URL = "/api/autoops/ingest";
 
 function App() {
   const [metrics, setMetrics] = useState(null);
@@ -23,7 +24,7 @@ function App() {
   async function loadMetrics() {
     try {
       setError("");
-      const res = await fetch(`${AUTOOPS_API}/support/metrics`);
+      const res = await fetch(METRICS_URL);
       if (!res.ok) throw new Error(`Metrics API returned ${res.status}`);
       const data = await res.json();
       setMetrics(data);
@@ -38,7 +39,7 @@ function App() {
     setError("");
 
     try {
-      const res = await fetch(`${AUTOOPS_API}/support/ingest`, {
+      const res = await fetch(INGEST_URL, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(event),
