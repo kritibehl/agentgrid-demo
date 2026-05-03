@@ -820,3 +820,44 @@ button:disabled {
     grid-template-columns: 1fr;
   }
 }
+
+.liveStatus {
+  margin-top: 14px;
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  padding: 10px 14px;
+  border-radius: 999px;
+  background: rgba(74, 222, 128, 0.12);
+  border: 1px solid rgba(74, 222, 128, 0.28);
+  color: #c9ffd8;
+  font-weight: 800;
+  font-size: 14px;
+}
+
+.modeLine {
+  margin: 0 0 10px;
+  color: #d9ecff;
+  font-weight: 800;
+  font-size: 14px;
+}
+
+.queryHints {
+  margin-top: 12px;
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  color: #9fb6d1;
+  font-size: 14px;
+}
+
+.queryHints button {
+  min-height: auto;
+  padding: 7px 10px;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.08);
+  color: #d9ecff;
+  border: 1px solid rgba(255,255,255,0.12);
+  font-size: 13px;
+  font-weight: 700;
+}

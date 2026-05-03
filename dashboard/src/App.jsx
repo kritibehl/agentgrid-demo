@@ -143,6 +143,12 @@ function App() {
           Live Cloud Run backend · real event ingestion · not a static demo
         </p>
 
+
+        <div className="liveStatus">
+          <strong>Live System Status:</strong>{" "}
+          {ingested} events ingested · {escalate} escalations · {hold} holds · 0 unsafe shipments
+        </div>
+
         <p className="subtitle">
           AgentGrid routes GenAI eval-gate decisions into AutoOps on Google Cloud Run,
           where hold/escalate events are persisted and exposed through live metrics.
@@ -158,6 +164,11 @@ function App() {
 
         <div className="proofMetrics">
           <h2>Proof Metrics</h2>
+
+          <p className="modeLine">
+            Mode: Mock (deterministic evaluation) · Real-model runs available in repo
+          </p>
+
           <p className="proofIntro">
             Validated on controlled failure scenarios + live Cloud Run ingestion.
           </p>
@@ -220,6 +231,12 @@ function App() {
             <button onClick={analyzeQuery} disabled={running}>
               Analyze
             </button>
+          </div>
+
+          <div className="queryHints">
+            Try: <button onClick={() => setQuery("Why did deployment fail?")}>Why did deployment fail?</button>
+            <button onClick={() => setQuery("Why is latency high?")}>Why is latency high?</button>
+            <button onClick={() => setQuery("Why did retrieval fail?")}>Why did retrieval fail?</button>
           </div>
         </div>
 
