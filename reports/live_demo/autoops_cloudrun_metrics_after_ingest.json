@@ -1,0 +1,9 @@
+{
+    "agentgrid_events_ingested": 2,
+    "agentgrid_decision_breakdown": [
+        {
+            "agent_decision": "escalate",
+            "count": 2
+        }
+    ]
+}

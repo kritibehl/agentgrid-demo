@@ -1,0 +1,58 @@
+{
+  "agent_output": {
+    "input": "SIMULATE_TOOL_FAILURE\n\nDeployment logs show DB timeout and retry storm.\nThe document search tool should fail for this scenario.\n",
+    "issue": "tool_failure",
+    "context": [],
+    "analysis": [
+      "Detected timeout issue",
+      "Detected retry behavior"
+    ],
+    "actions": [
+      "Escalate because required tool execution failed"
+    ],
+    "answer": "Issue classified as tool_failure. Findings: Detected timeout issue, Detected retry behavior. Recommended actions: Escalate because required tool execution failed. Evidence sources: none.",
+    "tool_errors": [
+      "simulated document search tool failure"
+    ],
+    "retrieval_latency_seconds": 0.0,
+    "trace": [
+      "classify_issue",
+      "retrieve_context",
+      "analyze_logs",
+      "create_action_plan",
+      "generate_answer"
+    ],
+    "model_mode": "mock"
+  },
+  "metrics": {
+    "local_mock_latency_ms": 2.48,
+    "tool_call_success_rate": 0.0,
+    "tokens_input": 20,
+    "tokens_output": 30,
+    "tokens_per_second": 20135.88,
+    "estimated_cost_per_request": 5.5e-05,
+    "retrieval_hit_rate": 0.0,
+    "trace_depth": 5
+  },
+  "eval_gate": {
+    "correctness": true,
+    "citation_coverage": false,
+    "unsupported_answer": true,
+    "safety": true,
+    "retrieval_hit_rate": 0.0,
+    "final_decision": "escalate",
+    "reason": "tool_failure"
+  },
+  "autoops_event": {
+    "status": "sent",
+    "status_code": 200,
+    "response": "{\"status\":\"ingested\",\"id\":2,\"source\":\"agentgrid\",\"issue_type\":\"tool_failure\",\"decision\":\"escalate\",\"severity\":\"critical\"}",
+    "event": {
+      "source": "agentgrid",
+      "issue_type": "tool_failure",
+      "severity": "critical",
+      "decision": "escalate",
+      "reason": "tool_failure"
+    }
+  }
+}

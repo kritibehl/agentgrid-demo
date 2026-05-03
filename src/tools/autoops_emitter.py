@@ -1,14 +1,10 @@
-import json
-from datetime import datetime, timezone
-from pathlib import Path
+import os
+import requests
 
-EVENTS_PATH = Path("events/autoops_events.jsonl")
+AUTOOPS_URL = os.getenv("AUTOOPS_URL", "")
 
-def emit_autoops_event(source: str, issue_type: str, severity: str, decision: str, reason: str):
-    EVENTS_PATH.parent.mkdir(exist_ok=True)
-
+def emit_autoops_event(source, issue_type, severity, decision, reason):
     event = {
-        "timestamp": datetime.now(timezone.utc).isoformat(),
         "source": source,
         "issue_type": issue_type,
         "severity": severity,
@@ -16,7 +12,16 @@ def emit_autoops_event(source: str, issue_type: str, severity: str, decision: st
         "reason": reason,
     }
 
-    with EVENTS_PATH.open("a") as f:
-        f.write(json.dumps(event) + "\n")
+    if not AUTOOPS_URL:
+        return {"status": "skipped", "reason": "no AUTOOPS_URL set", "event": event}
 
-    return event
+    try:
+        r = requests.post(f"{AUTOOPS_URL}/support/ingest", json=event, timeout=5)
+        return {
+            "status": "sent",
+            "status_code": r.status_code,
+            "response": r.text[:300],
+            "event": event,
+        }
+    except Exception as e:
+        return {"status": "error", "error": str(e), "event": event}
