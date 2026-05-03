@@ -63,7 +63,7 @@ function App() {
     }
   }
 
-  async function triggerToolFailure() {
+  async function runToolFailureScenario() {
     await emitEvent(
       {
         source: "agentgrid",
@@ -83,7 +83,7 @@ function App() {
     );
   }
 
-  async function triggerRetrievalFailure() {
+  async function runRetrievalFailureScenario() {
     await emitEvent(
       {
         source: "agentgrid",
@@ -103,14 +103,11 @@ function App() {
     );
   }
 
-
   async function analyzeQuery() {
-    const lowered = query.toLowerCase();
-
-    if (lowered.includes("missing") || lowered.includes("context") || lowered.includes("why")) {
-      await triggerRetrievalFailure();
+    if (query.toLowerCase().includes("tool")) {
+      await runToolFailureScenario();
     } else {
-      await triggerToolFailure();
+      await runRetrievalFailureScenario();
     }
   }
 
@@ -131,13 +128,7 @@ function App() {
           Live Cloud Run System
         </div>
 
-        <h1>
-          <span>Production</span>
-          <span>GenAI</span>
-          <span>Incident</span>
-          <span>Intelligence</span>
-          <span>System</span>
-        </h1>
+        <h1 className="cleanTitle">Production GenAI Incident Intelligence System</h1>
 
         <p className="positioningLine">
           Built to model how production AI systems detect failures, block unsafe outputs,
@@ -153,26 +144,25 @@ function App() {
           where hold/escalate events are persisted and exposed through live metrics.
         </p>
 
-
         <div className="linkRow">
-          <a href="https://github.com/kritibehl/agentgrid" target="_blank" rel="noreferrer">
-            AgentGrid GitHub
-          </a>
-          <a href="https://github.com/kritibehl/AutoOps-Insight" target="_blank" rel="noreferrer">
-            AutoOps GitHub
-          </a>
-          <a href="https://kriti-portfolio-six.vercel.app/" target="_blank" rel="noreferrer">
-            Portfolio
-          </a>
+          <a href="https://github.com/kritibehl/agentgrid" target="_blank" rel="noreferrer">AgentGrid GitHub</a>
+          <span>·</span>
+          <a href="https://github.com/kritibehl/AutoOps-Insight" target="_blank" rel="noreferrer">AutoOps GitHub</a>
+          <span>·</span>
+          <a href="https://kriti-portfolio-six.vercel.app/" target="_blank" rel="noreferrer">Portfolio</a>
         </div>
 
-        <div className="proofLine">
-          Validated across <strong>25 GenAI failure scenarios</strong> →{" "}
-          <strong>9 ship</strong> / <strong>10 hold</strong> / <strong>6 escalate</strong> ·{" "}
-          <strong>258.02 ms local eval p95</strong> · <strong>0.88 tool-call success rate</strong> ·{" "}
-          <strong>0 unsafe shipments</strong>
-          <p className="metricNote">
-            Real-model runs saved under reports/real_model_runs; mock mode powers this public demo for deterministic evaluation.
+        <div className="proofMetrics">
+          <h2>Proof Metrics</h2>
+          <ul>
+            <li>25 validation runs</li>
+            <li>9 ship / 10 hold / 6 escalate</li>
+            <li>p95 latency: 258 ms</li>
+            <li>tool success rate: 0.88</li>
+            <li>0 unsafe shipments</li>
+          </ul>
+          <p>
+            Real-model runs saved under <code>reports/real_model_runs</code>; mock mode powers this public demo for deterministic evaluation.
           </p>
         </div>
 
@@ -198,23 +188,6 @@ function App() {
           </ul>
         </div>
 
-        <div className="verticalFlow">
-          <div>Query</div>
-          <span>↓</span>
-          <div>RAG over docs/logs/runbooks</div>
-          <span>↓</span>
-          <div>LangGraph workflow</div>
-          <span>↓</span>
-          <div>MCP-style tool execution</div>
-          <span>↓</span>
-          <div>Eval Gate</div>
-          <span>↓</span>
-          <div>Decision: hold / escalate</div>
-          <span>↓</span>
-          <div>AutoOps incident + action</div>
-        </div>
-
-
         <div className="queryBox">
           <label>Enter query</label>
           <div className="queryRow">
@@ -229,21 +202,35 @@ function App() {
           </div>
         </div>
 
+        <div className="verticalFlow">
+          <div>Query</div>
+          <span>↓</span>
+          <div>RAG over docs/logs/runbooks</div>
+          <span>↓</span>
+          <div>LangGraph workflow</div>
+          <span>↓</span>
+          <div>Tool execution</div>
+          <span>↓</span>
+          <div>Eval Gate</div>
+          <span>↓</span>
+          <div>Decision: hold / escalate</div>
+          <span>↓</span>
+          <div>AutoOps</div>
+          <span>↓</span>
+          <div>Incident + Action</div>
+        </div>
+
         <div className="actions">
-          <button onClick={triggerToolFailure} disabled={running}>
-            {running ? "Running system check..." : "Simulate Tool Failure"}
+          <button onClick={runToolFailureScenario} disabled={running}>
+            {running ? "Running..." : "Run Tool Failure Scenario"}
           </button>
-          <button className="secondary" onClick={triggerRetrievalFailure} disabled={running}>
-            Simulate Retrieval Failure
+          <button className="secondary" onClick={runRetrievalFailureScenario} disabled={running}>
+            Run Retrieval Failure Scenario
           </button>
           <button className="secondary" onClick={loadMetrics} disabled={running}>
             Refresh Cloud Metrics
           </button>
         </div>
-
-        <p className="hint">
-          System triggers real eval-gate decisions and persists incidents via Cloud Run.
-        </p>
 
         {error && <div className="error">Live API error: {error}</div>}
       </section>
