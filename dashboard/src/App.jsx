@@ -11,6 +11,7 @@ import {
   Database,
 } from "lucide-react";
 import "./style.css";
+import TryScenarios from "./components/TryScenarios";
 
 const METRICS_URL = "/api/autoops/metrics";
 const INGEST_URL = "/api/autoops/ingest";
@@ -219,6 +220,8 @@ function App() {
             <li><strong>Support action:</strong> Request logs and retry deployment</li>
           </ul>
         </div>
+
+          <TryScenarios onSelect={(scenarioQuery) => setQuery(scenarioQuery)} />
 
         <div className="queryBox">
           <label>Enter query</label>
