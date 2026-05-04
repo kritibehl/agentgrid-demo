@@ -1,0 +1,39 @@
+{
+  "scenarios": [
+    {
+      "name": "missing_context",
+      "query": "Why did the deployment fail if the logs are incomplete?",
+      "expected_decision": "hold",
+      "reason": "missing retrieval context",
+      "support_action": "ask for missing source or route to reviewer"
+    },
+    {
+      "name": "conflicting_evidence",
+      "query": "One runbook says rollback, another says retry. What should we do?",
+      "expected_decision": "escalate",
+      "reason": "retrieved evidence conflicts across sources",
+      "support_action": "route to product/support reviewer"
+    },
+    {
+      "name": "tool_failure",
+      "query": "Analyze the incident but the log parser is unavailable.",
+      "expected_decision": "escalate",
+      "reason": "required support tool failed",
+      "support_action": "open engineering follow-up"
+    },
+    {
+      "name": "latency_breach",
+      "query": "The model answered but response latency breached the support budget.",
+      "expected_decision": "hold",
+      "reason": "latency exceeded support threshold",
+      "support_action": "hold answer and inspect serving path"
+    },
+    {
+      "name": "normal_answer",
+      "query": "Why did deployment fail due to a DB timeout retry storm?",
+      "expected_decision": "ship",
+      "reason": "evidence-backed answer with supported action plan",
+      "support_action": "return answer with citations"
+    }
+  ]
+}

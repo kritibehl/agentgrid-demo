@@ -1,0 +1,19 @@
+{
+  "live_system_status": {
+    "events_ingested": 102,
+    "escalations": 51,
+    "holds": 10,
+    "unsafe_shipments": 0
+  },
+  "decision_distribution": {
+    "ship": 9,
+    "hold": 10,
+    "escalate": 6
+  },
+  "quality_metrics": {
+    "p95_latency_ms": 258,
+    "tool_call_success_rate": 0.88,
+    "retrieval_sources": 5,
+    "issue_families": 6
+  }
+}

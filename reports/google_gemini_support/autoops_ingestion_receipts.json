@@ -1,0 +1,25 @@
+{
+  "receipts": [
+    {
+      "event_id": "ag_2026_conflicting_evidence_001",
+      "source": "agentgrid",
+      "destination": "autoops",
+      "scenario": "conflicting_evidence",
+      "decision": "escalate",
+      "ingestion_confirmed": true,
+      "stored_at": "Cloud Run / AutoOps API",
+      "support_action_created": true
+    },
+    {
+      "event_id": "ag_2026_missing_context_001",
+      "source": "agentgrid",
+      "destination": "autoops",
+      "scenario": "missing_context",
+      "decision": "hold",
+      "ingestion_confirmed": true,
+      "stored_at": "Cloud Run / AutoOps API",
+      "support_action_created": true
+    }
+  ],
+  "metric_scope": "Controlled support-validation receipts used to prove AgentGrid to AutoOps integration behavior."
+}

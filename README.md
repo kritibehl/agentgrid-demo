@@ -189,3 +189,84 @@ API demo response:
 
 reports/api_demo/tool_failure_api_response.json
 
+
+---
+
+## Google Gemini Support Case Study
+
+AgentGrid is also documented as a GenAI support-gating system for product support, support engineering, and AI reliability workflows.
+
+**Live demo:** https://agentgrid-seven.vercel.app/
+
+### Before
+
+A GenAI app could return an answer even when:
+
+- retrieval context was missing
+- evidence conflicted across sources
+- tool calls failed
+- latency exceeded the support budget
+- the generated answer was unsupported
+
+### After
+
+AgentGrid evaluates each run and returns one of three decisions:
+
+- `ship` — answer is supported and safe to return
+- `hold` — context, latency, or confidence is insufficient
+- `escalate` — evidence conflicts or a tool failure requires review
+
+Unsafe or uncertain cases are routed into AutoOps for support review, root-cause analysis, and engineering follow-up.
+
+### Support-validation proof
+
+| Metric | Value |
+|---|---:|
+| Validation runs | 25 |
+| Ship decisions | 9 |
+| Hold decisions | 10 |
+| Escalate decisions | 6 |
+| Unsafe outputs | 0 |
+| p95 latency | 258 ms |
+| Tool-call success rate | 0.88 |
+| AutoOps support-validation incidents | 102 |
+| Escalations | 51 |
+| Sources | 5 |
+| Issue families | 6 |
+
+### Architecture
+
+```mermaid
+flowchart TD
+    A[User query] --> B[AgentGrid RAG over docs, logs, runbooks]
+    B --> C[LangGraph workflow]
+    C --> D[MCP-style tools]
+    D --> E[Eval gate]
+    E --> F{Decision}
+    F -->|ship| G[Return supported answer]
+    F -->|hold| H[Emit hold event]
+    F -->|escalate| I[Emit escalation event]
+    H --> J[AutoOps ingestion]
+    I --> J
+    J --> K[Root cause, PM summary, engineering bug report, support action]
+    K --> L[Dashboard metrics]
+Try these demo scenarios
+
+Use the live demo with these cases:
+
+Missing context → HOLD
+Conflicting evidence → ESCALATE
+Tool failure → ESCALATE
+Latency breach → HOLD
+Normal supported answer → SHIP
+
+Detailed write-up: docs/google_gemini_support_case_study.md
+
+Proof artifacts:
+
+reports/google_gemini_support/validation_summary.json
+reports/google_gemini_support/scenario_results.json
+reports/google_gemini_support/autoops_ingestion_receipts.json
+reports/google_gemini_support/support_metrics_snapshot.json
+
+Metric scope: the 102 incidents are support-validation incidents generated from controlled failure scenarios. They are not customer production incidents.

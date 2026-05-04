@@ -1,0 +1,16 @@
+{
+  "project": "AgentGrid + AutoOps",
+  "scope": "support-validation incidents generated from controlled GenAI support failure scenarios",
+  "validation_runs": 25,
+  "ship_decisions": 9,
+  "hold_decisions": 10,
+  "escalate_decisions": 6,
+  "unsafe_outputs": 0,
+  "p95_latency_ms": 258,
+  "tool_call_success_rate": 0.88,
+  "autoops_support_validation_incidents": 102,
+  "escalations": 51,
+  "sources": 5,
+  "issue_families": 6,
+  "metric_note": "These are controlled support-validation incidents, not customer production incidents."
+}
