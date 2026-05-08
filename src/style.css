@@ -1,0 +1,95 @@
+
+.cleanTitle {
+  font-size: clamp(42px, 6vw, 76px);
+  line-height: 1.02;
+  letter-spacing: -0.045em;
+  word-spacing: 0.12em;
+  max-width: 980px;
+}
+
+.proofMetrics {
+  margin-top: 22px;
+  padding: 18px 20px;
+  border-radius: 20px;
+  background: rgba(88, 166, 255, 0.1);
+  border: 1px solid rgba(88, 166, 255, 0.26);
+}
+
+.proofMetrics h2 {
+  margin: 0 0 10px;
+  font-size: 20px;
+}
+
+.proofMetrics ul {
+  margin: 0;
+  padding-left: 22px;
+  color: #d9ecff;
+  line-height: 1.7;
+}
+
+.proofMetrics p {
+  color: #b9c8dc;
+  font-size: 14px;
+  margin: 12px 0 0;
+}
+
+.queryBox {
+  margin: 26px 0;
+  padding: 22px;
+  border-radius: 20px;
+  background: rgba(0,0,0,0.28);
+  border: 1px solid rgba(88, 166, 255, 0.32);
+}
+
+.queryBox label {
+  display: block;
+  margin-bottom: 10px;
+  color: #d9ecff;
+  font-weight: 800;
+}
+
+.queryRow {
+  display: grid;
+  grid-template-columns: 1fr 130px;
+  gap: 14px;
+}
+
+.queryRow input {
+  min-height: 54px;
+  padding: 0 18px;
+  border-radius: 16px;
+  border: 1px solid rgba(255,255,255,0.18);
+  background: rgba(255,255,255,0.08);
+  color: #eef5ff;
+  font-size: 16px;
+  font-weight: 650;
+}
+
+.queryRow button {
+  min-height: 54px;
+  border-radius: 16px;
+}
+
+.verticalFlow {
+  gap: 10px;
+}
+
+.verticalFlow div {
+  padding: 13px 16px;
+}
+
+.verticalFlow span {
+  font-size: 20px;
+  line-height: 1;
+}
+
+.linkRow span {
+  color: #8ea5bf;
+  align-self: center;
+}
+
+@media (max-width: 650px) {
+  .queryRow {
+    grid-template-columns: 1fr;
+  }
+}

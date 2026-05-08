@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+from fastapi.responses import PlainTextResponse
 from pydantic import BaseModel
 
 from src.agent.graph import run_agent
@@ -6,6 +7,8 @@ from src.metrics.metrics import measure
 from src.metrics.llm_metrics import build_llm_metrics
 from src.evals.evaluator import evaluate
 from src.tools.autoops_emitter import emit_autoops_event
+from src.observability.tracing import new_trace_context
+from src.observability.prometheus import record_decision, render_prometheus
 
 app = FastAPI(title="AgentGrid API")
 
@@ -21,6 +24,7 @@ def health():
 @app.post("/agent/run")
 def agent_run(request: AgentRunRequest):
     output, latency = measure(run_agent, request.input)
+    trace_context = new_trace_context(scenario_id=output.get("issue", "unknown"))
 
     llm_metrics = build_llm_metrics(
         input_text=request.input,
@@ -44,8 +48,11 @@ def agent_run(request: AgentRunRequest):
             reason=evals["reason"],
         )
 
+    record_decision(evals["final_decision"], evals["reason"], 0.0 if output.get("tool_errors") else 1.0)
+
     return {
         "agent_output": output,
+        "trace": trace_context,
         "metrics": {
             "latency_seconds": round(latency, 4),
             "tool_call_success_rate": 0.0 if output.get("tool_errors") else 1.0,
@@ -54,6 +61,11 @@ def agent_run(request: AgentRunRequest):
         "eval_gate": evals,
         "autoops_event": autoops_event,
     }
+
+
+@app.get("/metrics", response_class=PlainTextResponse)
+def prometheus_metrics():
+    return render_prometheus()
 
 @app.post("/run")
 def legacy_run(request: AgentRunRequest):

@@ -6,6 +6,8 @@ from src.metrics.metrics import measure
 from src.metrics.llm_metrics import build_llm_metrics
 from src.evals.evaluator import evaluate
 from src.tools.autoops_emitter import emit_autoops_event
+from src.observability.tracing import new_trace_context
+from src.observability.prometheus import record_decision
 
 EXPECTED_CONTEXT_COUNT = 3
 
@@ -14,6 +16,7 @@ def run_file(file_path: str):
         text = f.read()
 
     output, latency = measure(run_agent, text)
+    trace_context = new_trace_context(scenario_id=output.get("issue", "unknown"))
 
     llm_metrics = build_llm_metrics(
         input_text=text,
@@ -40,8 +43,11 @@ def run_file(file_path: str):
     mode = output.get("model_mode", "mock")
     latency_key = "real_model_latency_ms" if mode == "gemini" else "local_mock_latency_ms"
 
+    record_decision(evals["final_decision"], evals["reason"], 0.0 if output.get("tool_errors") else 1.0)
+
     return {
         "agent_output": output,
+        "trace": trace_context,
         "metrics": {
             latency_key: round(latency * 1000, 2),
             "tool_call_success_rate": 0.0 if output.get("tool_errors") else 1.0,
