@@ -270,3 +270,12 @@ reports/google_gemini_support/autoops_ingestion_receipts.json
 reports/google_gemini_support/support_metrics_snapshot.json
 
 Metric scope: the 102 incidents are support-validation incidents generated from controlled failure scenarios. They are not customer production incidents.
+
+
+## Public Technical Report
+
+- [GenAI Support Gate Report](docs/genai_support_gate_report.md)
+- [API Contracts](docs/api_contracts/agentgrid_api.md)
+- [Escalation Taxonomy](docs/escalation_taxonomy.md)
+- [Reviewer Workflow](docs/reviewer_workflow.md)
+
