@@ -1,0 +1,141 @@
+{
+  "processed": {
+    "processed": [
+      {
+        "job_id": "job_ff995c01affc",
+        "status": "completed",
+        "attempts": 1,
+        "error": null,
+        "dead_lettered": false
+      },
+      {
+        "job_id": "job_53f05c5caa78",
+        "status": "failed",
+        "attempts": 1,
+        "error": "forced Redis worker failure for dead-letter validation",
+        "dead_lettered": false
+      },
+      {
+        "job_id": "job_53f05c5caa78",
+        "status": "dead_lettered",
+        "attempts": 2,
+        "error": "forced Redis worker failure for dead-letter validation",
+        "dead_lettered": true
+      },
+      {
+        "status": "idle",
+        "message": "no pending Redis jobs"
+      }
+    ],
+    "dead_letters": 1
+  },
+  "success_job": {
+    "job_id": "job_ff995c01affc",
+    "input_text": "Deployment failed because DB timeout caused retry storm.",
+    "status": "completed",
+    "attempts": 1,
+    "max_attempts": 3,
+    "created_at": 1778295766.186486,
+    "updated_at": 1778295766.2123652,
+    "result": {
+      "agent_output": {
+        "input": "Deployment failed because DB timeout caused retry storm.",
+        "issue": "timeout",
+        "context": [
+          {
+            "source": "data/docs/deployment_failure.txt",
+            "chunk_id": "deployment_failure.txt:0",
+            "content": "Service deployment failed due to timeout connecting to database.\nMultiple retries observed. Latency spikes before failure.",
+            "score": 3
+          },
+          {
+            "source": "data/logs/service_logs.txt",
+            "chunk_id": "service_logs.txt:0",
+            "content": "ERROR: DB connection timeout\nRetry attempt 1\nRetry attempt 2\nLatency exceeded threshold",
+            "score": 3
+          },
+          {
+            "source": "data/runbooks/db_timeout.txt",
+            "chunk_id": "db_timeout.txt:0",
+            "content": "If DB timeout occurs:\n1. Check DB health\n2. Restart connection pool\n3. Scale DB if needed",
+            "score": 2
+          }
+        ],
+        "analysis": [
+          "Detected timeout issue",
+          "Detected retry behavior"
+        ],
+        "actions": [
+          "Check database health and connection pool saturation",
+          "Inspect retry behavior and timeout thresholds",
+          "Restart or scale the affected dependency if saturation is confirmed",
+          "Escalate if latency or error rate remains above threshold"
+        ],
+        "answer": "Issue classified as timeout. Findings: Detected timeout issue, Detected retry behavior. Recommended actions: Check database health and connection pool saturation, Inspect retry behavior and timeout thresholds, Restart or scale the affected dependency if saturation is confirmed, Escalate if latency or error rate remains above threshold. Evidence sources: data/docs/deployment_failure.txt, data/logs/service_logs.txt, data/runbooks/db_timeout.txt.",
+        "tool_errors": [],
+        "retrieval_latency_seconds": 0.0021257400512695312,
+        "trace": [
+          "classify_issue",
+          "retrieve_context",
+          "analyze_logs",
+          "create_action_plan",
+          "generate_answer"
+        ],
+        "model_mode": "mock"
+      },
+      "trace": {
+        "trace_id": "trace_09ba845ec8c445b2",
+        "run_id": "run_5258a6017f13",
+        "scenario_id": "timeout",
+        "decision_id": "decision_1de1e010b721",
+        "prompt_version": "prompt_v1",
+        "retrieval_version": "retrieval_v1",
+        "created_at": "2026-05-09T03:02:46.212360+00:00"
+      },
+      "metrics": {
+        "local_mock_latency_ms": 6.64,
+        "tool_call_success_rate": 1.0,
+        "tokens_input": 9,
+        "tokens_output": 81,
+        "tokens_per_second": 13551.87,
+        "estimated_cost_per_request": 0.000126,
+        "retrieval_hit_rate": 1.0,
+        "trace_depth": 5
+      },
+      "eval_gate": {
+        "correctness": true,
+        "citation_coverage": true,
+        "unsupported_answer": false,
+        "safety": true,
+        "retrieval_hit_rate": 1.0,
+        "final_decision": "ship",
+        "reason": "passed"
+      }
+    },
+    "error": null
+  },
+  "failed_job": {
+    "job_id": "job_53f05c5caa78",
+    "input_text": "FORCE_WORKER_FAILURE",
+    "status": "dead_lettered",
+    "attempts": 2,
+    "max_attempts": 2,
+    "created_at": 1778295766.189495,
+    "updated_at": 1778295766.2451808,
+    "result": null,
+    "error": "forced Redis worker failure for dead-letter validation"
+  },
+  "dead_letters": [
+    {
+      "job_id": "job_53f05c5caa78",
+      "input_text": "FORCE_WORKER_FAILURE",
+      "status": "dead_lettered",
+      "attempts": 2,
+      "max_attempts": 2,
+      "created_at": 1778295766.189495,
+      "updated_at": 1778295766.2451808,
+      "result": null,
+      "error": "forced Redis worker failure for dead-letter validation"
+    }
+  ]
+}

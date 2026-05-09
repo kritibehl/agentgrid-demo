@@ -13,6 +13,14 @@ from src.security.jwt_auth import decode_demo_token, encode_demo_token
 from src.security.rbac import require_permission
 from src.workers.job_queue import enqueue_validation_job, get_job, list_jobs, list_dead_letters
 from src.workers.validation_worker import process_next_job, process_until_idle
+from src.workers.redis_job_queue import (
+    enqueue_redis_validation_job,
+    get_redis_job,
+    list_redis_jobs,
+    list_redis_dead_letters,
+    redis_health,
+)
+from src.workers.redis_validation_worker import process_next_redis_job, process_redis_until_idle
 
 app = FastAPI(title="AgentGrid API")
 
@@ -118,6 +126,41 @@ def process_worker_until_idle():
 @app.get("/dead-letter")
 def dead_letter_jobs():
     return {"dead_letter_jobs": list_dead_letters()}
+
+
+@app.get("/redis/health")
+def redis_queue_health():
+    return redis_health()
+
+@app.post("/redis/jobs/validation")
+def create_redis_validation_job(payload: dict):
+    return enqueue_redis_validation_job(
+        input_text=payload.get("input", ""),
+        max_attempts=payload.get("max_attempts", 3),
+    )
+
+@app.get("/redis/jobs/{job_id}")
+def redis_job_status(job_id: str):
+    job = get_redis_job(job_id)
+    if not job:
+        return {"error": "job_not_found", "job_id": job_id}
+    return job
+
+@app.get("/redis/jobs")
+def redis_jobs():
+    return {"jobs": list_redis_jobs()}
+
+@app.post("/redis/workers/process-next")
+def process_redis_worker_next():
+    return process_next_redis_job()
+
+@app.post("/redis/workers/process-until-idle")
+def process_redis_worker_until_idle():
+    return process_redis_until_idle()
+
+@app.get("/redis/dead-letter")
+def redis_dead_letter_jobs():
+    return {"dead_letter_jobs": list_redis_dead_letters()}
 
 @app.get("/metrics", response_class=PlainTextResponse)
 def prometheus_metrics():
