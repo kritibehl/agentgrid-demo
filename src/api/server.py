@@ -11,6 +11,7 @@ from src.observability.tracing import new_trace_context
 from src.observability.prometheus import record_decision, render_prometheus
 from src.security.jwt_auth import decode_demo_token, encode_demo_token
 from src.security.rbac import require_permission
+from src.audit.audit_log import record_audit_event, list_audit_events
 from src.workers.job_queue import enqueue_validation_job, get_job, list_jobs, list_dead_letters
 from src.workers.validation_worker import process_next_job, process_until_idle
 from src.workers.redis_job_queue import (
@@ -90,8 +91,19 @@ def review_action(payload: dict):
     user = decode_demo_token(token)
     decision = require_permission(user, permission)
 
+    audit_event = record_audit_event(
+        actor_id=user.user_id,
+        actor_role=user.role,
+        action=payload.get("action", permission),
+        decision_id=payload.get("decision_id", "decision_demo"),
+        trace_id=payload.get("trace_id", "trace_demo"),
+        outcome="allowed" if decision["allowed"] else "denied",
+        reason=decision["reason"],
+    )
+
     return {
         "authz": decision,
+        "audit_event": audit_event,
         "action": payload.get("action", permission),
         "decision_id": payload.get("decision_id", "decision_demo"),
     }
@@ -161,6 +173,17 @@ def process_redis_worker_until_idle():
 @app.get("/redis/dead-letter")
 def redis_dead_letter_jobs():
     return {"dead_letter_jobs": list_redis_dead_letters()}
+
+
+@app.get("/audit/events")
+def audit_events(decision_id: str = None, trace_id: str = None, actor_role: str = None):
+    return {
+        "events": list_audit_events(
+            decision_id=decision_id,
+            trace_id=trace_id,
+            actor_role=actor_role,
+        )
+    }
 
 @app.get("/metrics", response_class=PlainTextResponse)
 def prometheus_metrics():
