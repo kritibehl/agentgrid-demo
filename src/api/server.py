@@ -9,6 +9,8 @@ from src.evals.evaluator import evaluate
 from src.tools.autoops_emitter import emit_autoops_event
 from src.observability.tracing import new_trace_context
 from src.observability.prometheus import record_decision, render_prometheus
+from src.security.jwt_auth import decode_demo_token, encode_demo_token
+from src.security.rbac import require_permission
 
 app = FastAPI(title="AgentGrid API")
 
@@ -62,6 +64,27 @@ def agent_run(request: AgentRunRequest):
         "autoops_event": autoops_event,
     }
 
+
+
+@app.get("/auth/demo-token/{role}")
+def demo_token(role: str):
+    return {
+        "role": role,
+        "token": encode_demo_token(user_id=f"demo_{role}", role=role),
+    }
+
+@app.post("/review/action")
+def review_action(payload: dict):
+    token = payload.get("token", "")
+    permission = payload.get("permission", "")
+    user = decode_demo_token(token)
+    decision = require_permission(user, permission)
+
+    return {
+        "authz": decision,
+        "action": payload.get("action", permission),
+        "decision_id": payload.get("decision_id", "decision_demo"),
+    }
 
 @app.get("/metrics", response_class=PlainTextResponse)
 def prometheus_metrics():
