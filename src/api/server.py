@@ -11,6 +11,8 @@ from src.observability.tracing import new_trace_context
 from src.observability.prometheus import record_decision, render_prometheus
 from src.security.jwt_auth import decode_demo_token, encode_demo_token
 from src.security.rbac import require_permission
+from src.workers.job_queue import enqueue_validation_job, get_job, list_jobs, list_dead_letters
+from src.workers.validation_worker import process_next_job, process_until_idle
 
 app = FastAPI(title="AgentGrid API")
 
@@ -85,6 +87,37 @@ def review_action(payload: dict):
         "action": payload.get("action", permission),
         "decision_id": payload.get("decision_id", "decision_demo"),
     }
+
+
+@app.post("/jobs/validation")
+def create_validation_job(payload: dict):
+    return enqueue_validation_job(
+        input_text=payload.get("input", ""),
+        max_attempts=payload.get("max_attempts", 3),
+    )
+
+@app.get("/jobs/{job_id}")
+def job_status(job_id: str):
+    job = get_job(job_id)
+    if not job:
+        return {"error": "job_not_found", "job_id": job_id}
+    return job
+
+@app.get("/jobs")
+def jobs():
+    return {"jobs": list_jobs()}
+
+@app.post("/workers/process-next")
+def process_worker_next():
+    return process_next_job()
+
+@app.post("/workers/process-until-idle")
+def process_worker_until_idle():
+    return process_until_idle()
+
+@app.get("/dead-letter")
+def dead_letter_jobs():
+    return {"dead_letter_jobs": list_dead_letters()}
 
 @app.get("/metrics", response_class=PlainTextResponse)
 def prometheus_metrics():
