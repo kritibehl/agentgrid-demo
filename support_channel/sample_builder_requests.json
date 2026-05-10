@@ -1,0 +1,44 @@
+[
+  {
+    "request_id": "br_001",
+    "builder": "content-platform-builder",
+    "message": "Build failed after adding a new AI workflow. The validation job never completed.",
+    "signals": ["build failed", "validation job", "workflow"]
+  },
+  {
+    "request_id": "br_002",
+    "builder": "docs-publishing-user",
+    "message": "Publishing error: dashboard docs updated but the generated site is not showing the new page.",
+    "signals": ["publishing error", "docs", "site"]
+  },
+  {
+    "request_id": "br_003",
+    "builder": "ai-tooling-builder",
+    "message": "Tool-call failure during retrieval. The agent returned no evidence and escalated.",
+    "signals": ["tool-call failure", "retrieval", "escalated"]
+  },
+  {
+    "request_id": "br_004",
+    "builder": "support-reviewer",
+    "message": "The AI answer looks unsupported and I cannot find the retrieved source.",
+    "signals": ["unsupported AI answer", "missing evidence"]
+  },
+  {
+    "request_id": "br_005",
+    "builder": "workflow-integrator",
+    "message": "Missing docs context for deployment failure. The eval gate keeps returning HOLD.",
+    "signals": ["missing docs context", "deployment failure", "hold"]
+  },
+  {
+    "request_id": "br_006",
+    "builder": "platform-builder",
+    "message": "Latency breach after adding another support validation step. p95 is too high.",
+    "signals": ["latency breach", "p95", "validation"]
+  },
+  {
+    "request_id": "br_007",
+    "builder": "support-reviewer",
+    "message": "Again seeing missing docs context for deployment failure. The eval gate keeps returning HOLD.",
+    "signals": ["missing docs context", "deployment failure", "hold"]
+  }
+]
