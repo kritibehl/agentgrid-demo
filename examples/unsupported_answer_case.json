@@ -1,0 +1,6 @@
+{
+  "issue_type": "unsupported_answer",
+  "retrieval_hit_rate": 0.42,
+  "tool_call_status": "success",
+  "decision": "hold"
+}

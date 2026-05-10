@@ -1,0 +1,6 @@
+{
+  "issue_type": "tool_failure",
+  "retrieval_hit_rate": 0.0,
+  "tool_call_status": "failed",
+  "decision": "escalate"
+}

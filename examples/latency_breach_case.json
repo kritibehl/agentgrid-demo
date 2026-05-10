@@ -1,0 +1,6 @@
+{
+  "issue_type": "latency_breach",
+  "retrieval_hit_rate": 0.81,
+  "tool_call_status": "success",
+  "decision": "hold"
+}

@@ -1,0 +1,6 @@
+{
+  "issue_type": "low_retrieval_hit_rate",
+  "retrieval_hit_rate": 0.12,
+  "tool_call_status": "success",
+  "decision": "hold"
+}
