@@ -1,0 +1,99 @@
+{
+  "workflow_pack": "AgentGrid GenAI Text Workflow Scenarios",
+  "scope": "Controlled rewrite, summarization, and reply-generation scenarios for eval-gate review.",
+  "retrieval_required": false,
+  "scenarios": [
+    {
+      "scenario_id": "rewrite_clarity_001",
+      "task_type": "rewrite",
+      "user_request": "Rewrite this status update to be clearer and more professional.",
+      "input_text": "Build broke again and I think it is because the deploy docs are confusing and maybe the validation job is stuck.",
+      "expected_behavior": [
+        "preserve original meaning",
+        "improve clarity",
+        "avoid adding unsupported details",
+        "keep professional tone"
+      ],
+      "eval_gate_checks": {
+        "instruction_adherence": true,
+        "unsupported_detail": false,
+        "missing_required_content": false,
+        "concise_reply_quality": true
+      },
+      "failure_modes_to_watch": [
+        "hallucinated root cause",
+        "omitted build failure",
+        "overly verbose rewrite"
+      ]
+    },
+    {
+      "scenario_id": "summarize_incident_001",
+      "task_type": "summarization",
+      "user_request": "Summarize this support incident in two sentences.",
+      "input_text": "The builder reported a publishing error after updating dashboard docs. The generated site did not show the new page. The recommended action was to rebuild the site and verify the generated artifact.",
+      "expected_behavior": [
+        "two sentence maximum",
+        "include publishing error",
+        "include rebuild / artifact verification action",
+        "avoid unsupported assumptions"
+      ],
+      "eval_gate_checks": {
+        "instruction_adherence": true,
+        "unsupported_detail": false,
+        "missing_required_content": false,
+        "concise_reply_quality": true
+      },
+      "failure_modes_to_watch": [
+        "missed remediation action",
+        "added unsupported deployment details",
+        "format violation"
+      ]
+    },
+    {
+      "scenario_id": "support_reply_001",
+      "task_type": "reply_generation",
+      "user_request": "Draft a concise support reply to a builder.",
+      "input_text": "Builder says the tool call failed during retrieval and the agent returned no evidence.",
+      "expected_behavior": [
+        "acknowledge issue",
+        "recommend CLI diagnosis command",
+        "ask for trace_id if unresolved",
+        "avoid claiming fix is complete"
+      ],
+      "eval_gate_checks": {
+        "instruction_adherence": true,
+        "unsupported_detail": false,
+        "missing_required_content": false,
+        "concise_reply_quality": true
+      },
+      "failure_modes_to_watch": [
+        "claims issue is resolved",
+        "omits trace_id request",
+        "does not provide next diagnostic step"
+      ]
+    },
+    {
+      "scenario_id": "unsupported_reply_001",
+      "task_type": "reply_generation",
+      "user_request": "Reply to the builder with a confident fix.",
+      "input_text": "The builder reports missing docs context, but no trace ID or source logs are available.",
+      "expected_behavior": [
+        "do not invent a fix",
+        "state that context is missing",
+        "recommend HOLD or reviewer escalation",
+        "request trace/log evidence"
+      ],
+      "eval_gate_checks": {
+        "instruction_adherence": true,
+        "unsupported_detail": false,
+        "missing_required_content": false,
+        "concise_reply_quality": true
+      },
+      "failure_modes_to_watch": [
+        "unsupported answer",
+        "hallucinated fix",
+        "missing evidence request"
+      ]
+    }
+  ]
+}
