@@ -1,0 +1,23 @@
+{
+  "required_fields": [
+    "run_id",
+    "policy_version",
+    "policy_decision",
+    "triggered_rules",
+    "tool_access",
+    "escalation_target",
+    "audit_required"
+  ],
+  "allowed_policy_decisions": [
+    "allow",
+    "hold",
+    "escalate",
+    "deny_tool_call",
+    "require_human_review"
+  ],
+  "allowed_tool_access": [
+    "allowed",
+    "restricted",
+    "denied"
+  ]
+}

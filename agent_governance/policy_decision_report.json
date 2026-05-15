@@ -1,0 +1,99 @@
+{
+  "total_agent_runs": 5,
+  "allow_count": 1,
+  "hold_count": 1,
+  "escalate_count": 1,
+  "human_review_count": 1,
+  "denied_tool_call_count": 1,
+  "top_triggered_policy_rules": [
+    [
+      "insufficient_evidence",
+      2
+    ],
+    [
+      "unsupported_detail_detected",
+      1
+    ],
+    [
+      "missing_retrieval_grounding",
+      1
+    ],
+    [
+      "sensitive_context_risk",
+      1
+    ],
+    [
+      "tool_call_failure",
+      1
+    ],
+    [
+      "high_cost_retry_loop",
+      1
+    ]
+  ],
+  "policy_decision_distribution": {
+    "allow": 1,
+    "hold": 1,
+    "require_human_review": 1,
+    "escalate": 1,
+    "deny_tool_call": 1
+  },
+  "decisions": [
+    {
+      "run_id": "agent-rai-001",
+      "policy_version": "agent_policy_v1",
+      "policy_decision": "allow",
+      "triggered_rules": [],
+      "tool_access": "allowed",
+      "escalation_target": "none",
+      "audit_required": false
+    },
+    {
+      "run_id": "agent-rai-002",
+      "policy_version": "agent_policy_v1",
+      "policy_decision": "hold",
+      "triggered_rules": [
+        "unsupported_detail_detected",
+        "insufficient_evidence"
+      ],
+      "tool_access": "allowed",
+      "escalation_target": "support_reviewer",
+      "audit_required": true
+    },
+    {
+      "run_id": "agent-rai-003",
+      "policy_version": "agent_policy_v1",
+      "policy_decision": "require_human_review",
+      "triggered_rules": [
+        "missing_retrieval_grounding",
+        "sensitive_context_risk",
+        "insufficient_evidence"
+      ],
+      "tool_access": "restricted",
+      "escalation_target": "review_queue",
+      "audit_required": true
+    },
+    {
+      "run_id": "agent-rai-004",
+      "policy_version": "agent_policy_v1",
+      "policy_decision": "escalate",
+      "triggered_rules": [
+        "tool_call_failure"
+      ],
+      "tool_access": "restricted",
+      "escalation_target": "engineering_review",
+      "audit_required": true
+    },
+    {
+      "run_id": "agent-rai-005",
+      "policy_version": "agent_policy_v1",
+      "policy_decision": "deny_tool_call",
+      "triggered_rules": [
+        "high_cost_retry_loop"
+      ],
+      "tool_access": "denied",
+      "escalation_target": "platform_review",
+      "audit_required": true
+    }
+  ]
+}

@@ -1,0 +1,75 @@
+{
+  "policy_version": "agent_policy_v1",
+  "decisions": [
+    "allow",
+    "hold",
+    "escalate",
+    "deny_tool_call",
+    "require_human_review"
+  ],
+  "rules": [
+    {
+      "rule_id": "missing_retrieval_grounding",
+      "description": "Output lacks sufficient retrieval grounding.",
+      "signal": "missing_retrieval_grounding",
+      "decision": "require_human_review",
+      "tool_access": "restricted",
+      "audit_required": true,
+      "escalation_target": "review_queue"
+    },
+    {
+      "rule_id": "unsupported_detail_detected",
+      "description": "Output includes unsupported details.",
+      "signal": "unsupported_detail_detected",
+      "decision": "hold",
+      "tool_access": "allowed",
+      "audit_required": true,
+      "escalation_target": "support_reviewer"
+    },
+    {
+      "rule_id": "policy_conflict",
+      "description": "Detected conflict between user request and policy constraints.",
+      "signal": "policy_conflict",
+      "decision": "escalate",
+      "tool_access": "restricted",
+      "audit_required": true,
+      "escalation_target": "policy_review"
+    },
+    {
+      "rule_id": "sensitive_context_risk",
+      "description": "Sensitive-context risk requires human review.",
+      "signal": "sensitive_context_risk",
+      "decision": "require_human_review",
+      "tool_access": "restricted",
+      "audit_required": true,
+      "escalation_target": "safety_review"
+    },
+    {
+      "rule_id": "tool_call_failure",
+      "description": "Required support tool failed.",
+      "signal": "tool_call_failure",
+      "decision": "escalate",
+      "tool_access": "restricted",
+      "audit_required": true,
+      "escalation_target": "engineering_review"
+    },
+    {
+      "rule_id": "high_cost_retry_loop",
+      "description": "Repeated costly retries detected.",
+      "signal": "high_cost_retry_loop",
+      "decision": "deny_tool_call",
+      "tool_access": "denied",
+      "audit_required": true,
+      "escalation_target": "platform_review"
+    },
+    {
+      "rule_id": "insufficient_evidence",
+      "description": "Evidence coverage is insufficient for safe answer.",
+      "signal": "insufficient_evidence",
+      "decision": "hold",
+      "tool_access": "allowed",
+      "audit_required": true,
+      "escalation_target": "support_reviewer"
+    }
+  ]
+}

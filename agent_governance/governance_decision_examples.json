@@ -1,0 +1,62 @@
+[
+  {
+    "run_id": "agent-rai-001",
+    "signals": {
+      "unsupported_detail_detected": false,
+      "missing_retrieval_grounding": false,
+      "policy_conflict": false,
+      "sensitive_context_risk": false,
+      "tool_call_failure": false,
+      "high_cost_retry_loop": false,
+      "insufficient_evidence": false
+    }
+  },
+  {
+    "run_id": "agent-rai-002",
+    "signals": {
+      "unsupported_detail_detected": true,
+      "missing_retrieval_grounding": false,
+      "policy_conflict": false,
+      "sensitive_context_risk": false,
+      "tool_call_failure": false,
+      "high_cost_retry_loop": false,
+      "insufficient_evidence": true
+    }
+  },
+  {
+    "run_id": "agent-rai-003",
+    "signals": {
+      "unsupported_detail_detected": false,
+      "missing_retrieval_grounding": true,
+      "policy_conflict": false,
+      "sensitive_context_risk": true,
+      "tool_call_failure": false,
+      "high_cost_retry_loop": false,
+      "insufficient_evidence": true
+    }
+  },
+  {
+    "run_id": "agent-rai-004",
+    "signals": {
+      "unsupported_detail_detected": false,
+      "missing_retrieval_grounding": false,
+      "policy_conflict": false,
+      "sensitive_context_risk": false,
+      "tool_call_failure": true,
+      "high_cost_retry_loop": false,
+      "insufficient_evidence": false
+    }
+  },
+  {
+    "run_id": "agent-rai-005",
+    "signals": {
+      "unsupported_detail_detected": false,
+      "missing_retrieval_grounding": false,
+      "policy_conflict": false,
+      "sensitive_context_risk": false,
+      "tool_call_failure": false,
+      "high_cost_retry_loop": true,
+      "insufficient_evidence": false
+    }
+  }
+]
