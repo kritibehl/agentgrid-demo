@@ -1,0 +1,116 @@
+{
+  "total_scenarios": 3,
+  "passed": 3,
+  "failed": 0,
+  "average_quality_score": 4.67,
+  "results": [
+    {
+      "scenario_id": "db_timeout_retry_storm",
+      "summary": {
+        "scenario_id": "db_timeout_retry_storm",
+        "incident_summary": "Checkout deployment latency spike affected checkout with p95 latency 1800 ms, error rate 7.2%, and retry count 42.",
+        "probable_cause_hypothesis": "Probable-cause hypothesis: database timeout or connection-pool saturation may be causing retry amplification.",
+        "evidence_used": [
+          "ERROR db connection timeout",
+          "retry attempt 1",
+          "retry attempt 2",
+          "p95 latency exceeded threshold",
+          "checkout requests timing out",
+          "For DB timeout: check database health, inspect connection pool saturation, reduce retry fanout, and scale dependency if needed."
+        ],
+        "missing_evidence": [
+          "database health snapshot",
+          "connection pool metrics"
+        ],
+        "recommended_support_actions": [
+          "check database health",
+          "inspect connection pool saturation",
+          "reduce retry fanout",
+          "escalate if latency remains above threshold"
+        ],
+        "escalation_recommendation": "escalate"
+      },
+      "evaluation": {
+        "scenario_id": "db_timeout_retry_storm",
+        "groundedness": true,
+        "unsupported_detail_risk": false,
+        "actionability": true,
+        "uses_logs_or_runbook_context": true,
+        "root_cause_framed_as_hypothesis": true,
+        "quality_score": 5,
+        "max_score": 5,
+        "pass": true
+      }
+    },
+    {
+      "scenario_id": "missing_runbook_context",
+      "summary": {
+        "scenario_id": "missing_runbook_context",
+        "incident_summary": "Unknown approval-router failures affected approval-router with p95 latency 900 ms, error rate 4.1%, and retry count 8.",
+        "probable_cause_hypothesis": "Evidence is limited; probable cause is unknown pending runbook context and additional traces.",
+        "evidence_used": [
+          "approval-router returned intermittent 502",
+          "unknown dependency error",
+          "no matching runbook found"
+        ],
+        "missing_evidence": [
+          "runbook context",
+          "trace_id",
+          "dependency ownership"
+        ],
+        "recommended_support_actions": [
+          "request missing runbook",
+          "collect trace_id",
+          "escalate for manual review"
+        ],
+        "escalation_recommendation": "escalate"
+      },
+      "evaluation": {
+        "scenario_id": "missing_runbook_context",
+        "groundedness": true,
+        "unsupported_detail_risk": false,
+        "actionability": true,
+        "uses_logs_or_runbook_context": true,
+        "root_cause_framed_as_hypothesis": false,
+        "quality_score": 4,
+        "max_score": 5,
+        "pass": true
+      }
+    },
+    {
+      "scenario_id": "latency_breach_after_validation",
+      "summary": {
+        "scenario_id": "latency_breach_after_validation",
+        "incident_summary": "Support validation latency breach affected support-validation-worker with p95 latency 1250 ms, error rate 0.8%, and retry count 3.",
+        "probable_cause_hypothesis": "Probable-cause hypothesis: worker queue pressure or recent validation-step changes may be increasing p95 latency.",
+        "evidence_used": [
+          "validation step exceeded budget",
+          "p95 latency breach",
+          "worker queue depth increasing",
+          "For validation latency breach: inspect queue depth, worker saturation, retry loops, and recent validation-step changes."
+        ],
+        "missing_evidence": [
+          "worker utilization",
+          "recent validation-step diff"
+        ],
+        "recommended_support_actions": [
+          "inspect queue depth",
+          "check worker saturation",
+          "review recent validation changes"
+        ],
+        "escalation_recommendation": "hold_for_observation"
+      },
+      "evaluation": {
+        "scenario_id": "latency_breach_after_validation",
+        "groundedness": true,
+        "unsupported_detail_risk": false,
+        "actionability": true,
+        "uses_logs_or_runbook_context": true,
+        "root_cause_framed_as_hypothesis": true,
+        "quality_score": 5,
+        "max_score": 5,
+        "pass": true
+      }
+    }
+  ]
+}

@@ -1,0 +1,79 @@
+{
+  "workflow": "AgentGrid AIOps Incident Triage",
+  "scope": "Controlled incident-triage scenarios using logs, telemetry, and runbook context.",
+  "scenarios": [
+    {
+      "scenario_id": "db_timeout_retry_storm",
+      "incident_title": "Checkout deployment latency spike",
+      "logs": [
+        "ERROR db connection timeout",
+        "retry attempt 1",
+        "retry attempt 2",
+        "p95 latency exceeded threshold",
+        "checkout requests timing out"
+      ],
+      "telemetry": {
+        "service": "checkout",
+        "p95_latency_ms": 1800,
+        "error_rate_pct": 7.2,
+        "retry_count": 42
+      },
+      "runbook_context": [
+        "For DB timeout: check database health, inspect connection pool saturation, reduce retry fanout, and scale dependency if needed."
+      ],
+      "expected_probable_cause_hypothesis": "database timeout or connection-pool saturation causing retry amplification",
+      "expected_actions": [
+        "check database health",
+        "inspect connection pool saturation",
+        "reduce retry fanout",
+        "escalate if latency remains above threshold"
+      ]
+    },
+    {
+      "scenario_id": "missing_runbook_context",
+      "incident_title": "Unknown approval-router failures",
+      "logs": [
+        "approval-router returned intermittent 502",
+        "unknown dependency error",
+        "no matching runbook found"
+      ],
+      "telemetry": {
+        "service": "approval-router",
+        "p95_latency_ms": 900,
+        "error_rate_pct": 4.1,
+        "retry_count": 8
+      },
+      "runbook_context": [],
+      "expected_probable_cause_hypothesis": "insufficient evidence; root cause should be framed as unknown pending logs/runbook context",
+      "expected_actions": [
+        "request missing runbook",
+        "collect trace_id",
+        "escalate for manual review"
+      ]
+    },
+    {
+      "scenario_id": "latency_breach_after_validation",
+      "incident_title": "Support validation latency breach",
+      "logs": [
+        "validation step exceeded budget",
+        "p95 latency breach",
+        "worker queue depth increasing"
+      ],
+      "telemetry": {
+        "service": "support-validation-worker",
+        "p95_latency_ms": 1250,
+        "error_rate_pct": 0.8,
+        "retry_count": 3
+      },
+      "runbook_context": [
+        "For validation latency breach: inspect queue depth, worker saturation, retry loops, and recent validation-step changes."
+      ],
+      "expected_probable_cause_hypothesis": "worker queue pressure or added validation step increasing p95 latency",
+      "expected_actions": [
+        "inspect queue depth",
+        "check worker saturation",
+        "review recent validation changes"
+      ]
+    }
+  ]
+}
